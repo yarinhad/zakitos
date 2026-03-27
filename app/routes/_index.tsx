@@ -1,0 +1,541 @@
+import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {Await, useLoaderData, Link} from '@remix-run/react';
+import {Suspense} from 'react';
+import {Image, Money} from '@shopify/hydrogen';
+import {HeroSection} from '~/components/HeroSection';
+import {ProductCard, ProductCardSkeleton} from '~/components/ProductCard';
+import {UGCCarousel} from '~/components/UGCCarousel';
+import {BundleSelector} from '~/components/BundleSelector';
+import {HeatMeter} from '~/components/HeatMeter';
+import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
+
+export function meta() {
+  return [
+    {title: 'Zakitos — Real Heat. Real Chili.'},
+    {
+      name: 'description',
+      content:
+        'Premium artisanal dried chili snack strips. Bold flavors, real ingredients, maximum heat. Free shipping over $35.',
+    },
+  ];
+}
+
+export async function loader({context}: LoaderFunctionArgs) {
+  const {storefront} = context;
+
+  const featuredProducts = storefront.query(FEATURED_PRODUCTS_QUERY);
+  const collections = storefront.query(FEATURED_COLLECTIONS_QUERY);
+
+  return defer({featuredProducts, collections});
+}
+
+export default function Homepage() {
+  const {featuredProducts, collections} = useLoaderData<typeof loader>();
+
+  return (
+    <>
+      {/* ── Hero ──────────────────────────────────────────────── */}
+      <HeroSection imageSrc="/ecomm-hero-shot.png" />
+
+      {/* ── Marquee Band ─────────────────────────────────────── */}
+      <MarqueeBand />
+
+      {/* ── Featured Products ────────────────────────────────── */}
+      <section className="py-20 bg-zakitos-dark">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
+                The Lineup
+              </p>
+              <h2 className="font-display text-5xl md:text-6xl text-zakitos-cream tracking-wide leading-none">
+                CHOOSE YOUR
+                <br />
+                <span className="text-gradient-fire">HEAT LEVEL</span>
+              </h2>
+            </div>
+            <Link
+              to="/collections/all"
+              className="hidden md:flex items-center gap-2 text-zakitos-muted hover:text-zakitos-cream transition-colors font-mono text-sm"
+              prefetch="intent"
+            >
+              View All
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </Link>
+          </div>
+
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {Array.from({length: 4}).map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </div>
+            }
+          >
+            <Await resolve={featuredProducts}>
+              {({products}) => (
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {(products?.nodes ?? MOCK_PRODUCTS).map((product: any, i: number) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      loading={i < 2 ? 'eager' : 'lazy'}
+                    />
+                  ))}
+                </div>
+              )}
+            </Await>
+          </Suspense>
+
+          <div className="text-center mt-8 md:hidden">
+            <Link to="/collections/all" className="btn-outline-fire" prefetch="intent">
+              Shop All Products
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Heat Scale Explorer ───────────────────────────────── */}
+      <HeatScaleSection />
+
+      {/* ── Brand Story Teaser ────────────────────────────────── */}
+      <BrandStoryTeaser />
+
+      {/* ── UGC Wall ─────────────────────────────────────────── */}
+      <UGCCarousel />
+
+      {/* ── Bundles ──────────────────────────────────────────── */}
+      <BundleSelector />
+
+      {/* ── Trust Strip ──────────────────────────────────────── */}
+      <TrustStrip />
+
+      {/* ── Flavor Quiz CTA ──────────────────────────────────── */}
+      <FlavorQuizCTA />
+    </>
+  );
+}
+
+/* ─── Marquee Band ────────────────────────────────────────────────── */
+function MarqueeBand() {
+  const items = [
+    'REAL HEAT',
+    'REAL CHILI',
+    'NO SHORTCUTS',
+    'ARTISAN CRAFTED',
+    'BOLD BY NATURE',
+    'CLEAN INGREDIENTS',
+    'MAXIMUM FLAVOR',
+    '5 HEAT LEVELS',
+  ];
+  const repeated = [...items, ...items]; // duplicate for seamless loop
+
+  return (
+    <div className="marquee-container bg-zakitos-red py-3 border-y border-zakitos-red/30 overflow-hidden">
+      <div className="marquee-track">
+        {repeated.map((item, i) => (
+          <span
+            key={i}
+            className="marquee-item font-display text-sm tracking-widest uppercase text-white px-6 flex items-center gap-6"
+          >
+            {item}
+            <span className="text-white/40">·</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Heat Scale Explorer ─────────────────────────────────────────── */
+const HEAT_TIERS = [
+  {
+    level: 1,
+    name: 'Jalapeño',
+    tagline: 'A warm welcome.',
+    description: 'Bright, citrusy heat with a satisfying snack crunch. The gateway drug.',
+    emoji: '🌶',
+    color: '#FFB800',
+    handle: 'classic-chili',
+    image: '/zakitos-1-pack-package.png',
+    shu: '500–2,500 SHU',
+  },
+  {
+    level: 3,
+    name: 'Habanero',
+    tagline: 'Now we're talking.',
+    description: 'Fruity, tropical heat that builds. You'll sweat. You'll love it.',
+    emoji: '🔥',
+    color: '#FF5500',
+    handle: 'garlic-chili',
+    image: '/zakitos-5-pack-package.png',
+    shu: '100,000–350,000 SHU',
+  },
+  {
+    level: 5,
+    name: 'Reaper',
+    tagline: 'Not for the faint-hearted.',
+    description: 'The Carolina Reaper. Maximum heat. Respect is mandatory.',
+    emoji: '💀',
+    color: '#E8170B',
+    handle: 'extreme-reaper',
+    image: '/zakitos-24-pack-package.png',
+    shu: '1,000,000+ SHU',
+  },
+];
+
+function HeatScaleSection() {
+  return (
+    <section className="py-24 bg-zakitos-black noise-overlay relative overflow-hidden">
+      {/* Background element */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[20rem] font-display text-zakitos-red/5 pointer-events-none select-none leading-none">
+        🌶
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-16">
+          <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
+            The Heat Scale
+          </p>
+          <h2 className="font-display text-5xl md:text-7xl text-zakitos-cream tracking-wide leading-none">
+            FIND YOUR
+            <br />
+            <span className="text-gradient-fire">THRESHOLD</span>
+          </h2>
+          <p className="text-zakitos-muted mt-4 max-w-md mx-auto">
+            We have 5 tiers, from warm to weapon-grade. Where does your courage stop?
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          {HEAT_TIERS.map((tier) => (
+            <Link
+              key={tier.level}
+              to={`/products/${tier.handle}`}
+              prefetch="intent"
+              className="group card-dark p-6 text-left hover:border-zakitos-red/60 transition-all duration-300"
+            >
+              {/* Tier image */}
+              <div className="aspect-square bg-zakitos-dark mb-5 overflow-hidden flex items-center justify-center">
+                <img
+                  src={tier.image}
+                  alt={tier.name}
+                  className="w-3/4 h-3/4 object-contain transition-transform duration-500 group-hover:scale-110"
+                  loading="lazy"
+                />
+              </div>
+
+              {/* Tier info */}
+              <div className="flex items-start justify-between mb-3">
+                <div>
+                  <div className="font-mono text-xs tracking-widest uppercase mb-1" style={{color: tier.color}}>
+                    Level {tier.level}
+                  </div>
+                  <h3 className="font-display text-3xl text-zakitos-cream tracking-wide">
+                    {tier.name}
+                  </h3>
+                  <p className="text-zakitos-warm text-sm mt-0.5 italic">{tier.tagline}</p>
+                </div>
+                <span className="text-3xl">{tier.emoji}</span>
+              </div>
+
+              <p className="text-zakitos-muted text-sm leading-relaxed mb-4">
+                {tier.description}
+              </p>
+
+              <HeatMeter level={tier.level} showLabel={false} size="sm" />
+
+              <div className="flex items-center justify-between mt-4">
+                <span className="font-mono text-xs text-zakitos-muted">{tier.shu}</span>
+                <span
+                  className="font-display text-sm tracking-wide group-hover:underline"
+                  style={{color: tier.color}}
+                >
+                  Try It →
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Brand Story Teaser ──────────────────────────────────────────── */
+function BrandStoryTeaser() {
+  return (
+    <section
+      className="py-0 relative overflow-hidden"
+      style={{background: 'linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%)'}}
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="grid md:grid-cols-2 min-h-[480px]">
+          {/* Image side */}
+          <div className="relative min-h-[320px] md:min-h-auto overflow-hidden">
+            <img
+              src="/ecomm-detail-lifestyle-closeup.png"
+              alt="Zakitos Chili Close-Up"
+              className="img-fill object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-zakitos-dark md:to-zakitos-dark" />
+          </div>
+
+          {/* Text side */}
+          <div className="flex flex-col justify-center px-8 md:px-12 py-14">
+            <p className="font-mono text-zakitos-red text-xs tracking-widest uppercase mb-4">
+              The Story
+            </p>
+            <h2 className="font-display text-5xl md:text-6xl text-zakitos-cream tracking-wide leading-none mb-6">
+              THE CHILI
+              <br />
+              <span className="text-gradient-fire">IS THE SNACK.</span>
+            </h2>
+            <p className="text-zakitos-muted text-base leading-relaxed mb-8 max-w-sm">
+              No chips. No powder. No filler. Just whole dried chili strips,
+              sourced and seasoned with the boldness you deserve.
+              Every bag is a deliberate act of flavor engineering.
+            </p>
+            <div className="flex flex-col gap-3 mb-8">
+              {[
+                {icon: '🌶', text: 'Whole dried chili strips — the real thing'},
+                {icon: '✓', text: 'Clean label — no artificial shortcuts'},
+                {icon: '🌍', text: 'Farm-traced chili sourcing'},
+                {icon: '🔥', text: '5-tier heat scale, built for discovery'},
+              ].map(({icon, text}) => (
+                <div key={text} className="flex items-center gap-3">
+                  <span className="text-lg w-6 flex-shrink-0">{icon}</span>
+                  <span className="text-zakitos-warm text-sm">{text}</span>
+                </div>
+              ))}
+            </div>
+            <Link to="/about" className="btn-outline-fire self-start" prefetch="intent">
+              Read Our Story
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Trust Strip ─────────────────────────────────────────────────── */
+function TrustStrip() {
+  const items = [
+    {icon: '🚚', title: 'Free Shipping', sub: 'On orders over $35'},
+    {icon: '🔄', title: '30-Day Returns', sub: 'No questions asked'},
+    {icon: '🌿', title: 'Clean Ingredients', sub: 'No artificial anything'},
+    {icon: '🔥', title: 'Real Heat', sub: 'Farm-sourced whole chilies'},
+  ];
+
+  return (
+    <div className="bg-zakitos-card border-y border-zakitos-border py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 md:divide-x md:divide-zakitos-border">
+          {items.map(({icon, title, sub}) => (
+            <div key={title} className="flex flex-col md:flex-row items-center md:justify-center gap-3 text-center md:text-left md:px-6">
+              <span className="text-3xl">{icon}</span>
+              <div>
+                <p className="font-display text-base text-zakitos-cream tracking-wide">{title}</p>
+                <p className="text-zakitos-muted text-xs mt-0.5">{sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Flavor Quiz CTA ─────────────────────────────────────────────── */
+function FlavorQuizCTA() {
+  return (
+    <section
+      className="py-24 relative overflow-hidden"
+      style={{
+        background: 'linear-gradient(135deg, #E8170B 0%, #FF5500 50%, #FFB800 100%)',
+      }}
+    >
+      {/* Background text */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+        <span className="font-display text-[25vw] text-black/10 leading-none whitespace-nowrap">
+          BOLD
+        </span>
+      </div>
+
+      <div className="relative z-10 text-center px-4">
+        <h2 className="font-display text-5xl md:text-7xl text-white tracking-wide leading-none mb-4">
+          NOT SURE WHERE
+          <br />
+          TO START?
+        </h2>
+        <p className="text-white/80 text-lg max-w-md mx-auto mb-8">
+          Take the 60-second flavor quiz and we'll match you to your perfect heat level.
+        </p>
+        <Link
+          to="/pages/flavor-quiz"
+          className="inline-flex items-center gap-2 bg-white text-zakitos-black font-display text-xl px-10 py-4 tracking-wide uppercase hover:bg-zakitos-cream transition-colors"
+          prefetch="intent"
+        >
+          Find My Heat Level
+          <span>→</span>
+        </Link>
+        <p className="text-white/60 text-xs mt-4 font-mono">
+          Takes 60 seconds · No sign-up required
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Queries ─────────────────────────────────────────────────────── */
+const FEATURED_PRODUCTS_QUERY = `#graphql
+  query FeaturedProducts($country: CountryCode, $language: LanguageCode)
+  @inContext(country: $country, language: $language) {
+    products(first: 8, sortKey: BEST_SELLING) {
+      nodes {
+        ...ProductCard
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+`;
+
+const FEATURED_COLLECTIONS_QUERY = `#graphql
+  query FeaturedCollections {
+    collections(first: 4) {
+      nodes {
+        id
+        title
+        handle
+        image {
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+  }
+`;
+
+/* ─── Mock data fallback (dev without Shopify) ────────────────────── */
+const MOCK_PRODUCTS = [
+  {
+    id: 'gid://shopify/Product/1',
+    title: 'Classic Chili',
+    handle: 'classic-chili',
+    tags: ['heat-2', 'classic', 'bestseller'],
+    availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '8.00', currencyCode: 'USD'},
+      maxVariantPrice: {amount: '12.00', currencyCode: 'USD'},
+    },
+    images: {
+      nodes: [
+        {id: '1', url: '/zakitos-1-pack-package.png', altText: 'Classic Chili', width: 800, height: 800},
+        {id: '2', url: '/ecomm-hero-shot-one-package.png', altText: 'Classic Chili Lifestyle', width: 800, height: 800},
+      ],
+    },
+    variants: {
+      nodes: [
+        {
+          id: 'gid://shopify/ProductVariant/1',
+          title: 'Single Pack',
+          availableForSale: true,
+          price: {amount: '8.00', currencyCode: 'USD'},
+          compareAtPrice: null,
+          selectedOptions: [{name: 'Size', value: 'Single Pack'}],
+        },
+      ],
+    },
+  },
+  {
+    id: 'gid://shopify/Product/2',
+    title: 'Garlic Chili',
+    handle: 'garlic-chili',
+    tags: ['heat-4', 'garlic', 'new'],
+    availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '8.00', currencyCode: 'USD'},
+      maxVariantPrice: {amount: '12.00', currencyCode: 'USD'},
+    },
+    images: {
+      nodes: [
+        {id: '3', url: '/zakitos-5-pack-package.png', altText: 'Garlic Chili', width: 800, height: 800},
+      ],
+    },
+    variants: {
+      nodes: [
+        {
+          id: 'gid://shopify/ProductVariant/2',
+          title: 'Single Pack',
+          availableForSale: true,
+          price: {amount: '8.00', currencyCode: 'USD'},
+          compareAtPrice: {amount: '10.00', currencyCode: 'USD'},
+          selectedOptions: [{name: 'Size', value: 'Single Pack'}],
+        },
+      ],
+    },
+  },
+  {
+    id: 'gid://shopify/Product/3',
+    title: 'Extreme Reaper',
+    handle: 'extreme-reaper',
+    tags: ['heat-5', 'reaper'],
+    availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '10.00', currencyCode: 'USD'},
+      maxVariantPrice: {amount: '14.00', currencyCode: 'USD'},
+    },
+    images: {
+      nodes: [
+        {id: '5', url: '/zakitos-24-pack-package.png', altText: 'Extreme Reaper', width: 800, height: 800},
+      ],
+    },
+    variants: {
+      nodes: [
+        {
+          id: 'gid://shopify/ProductVariant/3',
+          title: 'Single Pack',
+          availableForSale: true,
+          price: {amount: '10.00', currencyCode: 'USD'},
+          compareAtPrice: null,
+          selectedOptions: [{name: 'Size', value: 'Single Pack'}],
+        },
+      ],
+    },
+  },
+  {
+    id: 'gid://shopify/Product/4',
+    title: 'Heat Journey Pack',
+    handle: 'heat-journey-pack',
+    tags: ['heat-4', 'bundle', 'bestseller'],
+    availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '38.00', currencyCode: 'USD'},
+      maxVariantPrice: {amount: '38.00', currencyCode: 'USD'},
+    },
+    images: {
+      nodes: [
+        {id: '7', url: '/ecomm-hero-shot-all packages.png', altText: 'Heat Journey Pack', width: 800, height: 800},
+      ],
+    },
+    variants: {
+      nodes: [
+        {
+          id: 'gid://shopify/ProductVariant/4',
+          title: 'Bundle',
+          availableForSale: true,
+          price: {amount: '38.00', currencyCode: 'USD'},
+          compareAtPrice: {amount: '44.00', currencyCode: 'USD'},
+          selectedOptions: [{name: 'Size', value: 'Bundle'}],
+        },
+      ],
+    },
+  },
+];
