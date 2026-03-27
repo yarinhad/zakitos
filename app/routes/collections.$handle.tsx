@@ -14,11 +14,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   if (!handle) throw new Response('Not Found', {status: 404});
 
-  const {collection} = await storefront.query(COLLECTION_QUERY, {
-    variables: {handle, first: 48},
-  });
+  // Fall back to mock collection when no Shopify credentials are configured
+  const result = await storefront
+    .query(COLLECTION_QUERY, {variables: {handle, first: 48}})
+    .catch(() => null);
 
-  if (!collection) throw new Response('Collection Not Found', {status: 404});
+  const collection = result?.collection ?? getMockCollection(handle);
 
   return json({collection, heatFilter, flavorFilter});
 }
@@ -186,6 +187,111 @@ export default function CollectionPage() {
       </div>
     </>
   );
+}
+
+import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
+
+// ─── Mock data (shown when no Shopify credentials are set) ────────────────────
+
+const ALL_MOCK_PRODUCTS = [
+  {
+    id: '1', title: 'Classic Chili', handle: 'classic-chili',
+    tags: ['heat-2', 'classic', 'snacks'], availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '8.00', currencyCode: 'USD' as CurrencyCode},
+      maxVariantPrice: {amount: '12.00', currencyCode: 'USD' as CurrencyCode},
+    },
+    images: {nodes: [{id: '1', url: '/zakitos-1-pack-package.png', altText: 'Classic Chili', width: 800, height: 800}]},
+    variants: {nodes: [{id: 'v1', title: 'Single Pack', availableForSale: true, price: {amount: '8.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: null, selectedOptions: [{name: 'Size', value: 'Single Pack'}]}]},
+  },
+  {
+    id: '2', title: 'Garlic Chili', handle: 'garlic-chili',
+    tags: ['heat-4', 'garlic', 'snacks'], availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '8.00', currencyCode: 'USD' as CurrencyCode},
+      maxVariantPrice: {amount: '12.00', currencyCode: 'USD' as CurrencyCode},
+    },
+    images: {nodes: [{id: '3', url: '/zakitos-5-pack-package.png', altText: 'Garlic Chili', width: 800, height: 800}]},
+    variants: {nodes: [{id: 'v2', title: 'Single Pack', availableForSale: true, price: {amount: '8.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '10.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Size', value: 'Single Pack'}]}]},
+  },
+  {
+    id: '3', title: 'Extreme Reaper', handle: 'extreme-reaper',
+    tags: ['heat-5', 'reaper', 'snacks'], availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '10.00', currencyCode: 'USD' as CurrencyCode},
+      maxVariantPrice: {amount: '14.00', currencyCode: 'USD' as CurrencyCode},
+    },
+    images: {nodes: [{id: '5', url: '/zakitos-24-pack-package.png', altText: 'Extreme Reaper', width: 800, height: 800}]},
+    variants: {nodes: [{id: 'v3', title: 'Single Pack', availableForSale: true, price: {amount: '10.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: null, selectedOptions: [{name: 'Size', value: 'Single Pack'}]}]},
+  },
+  {
+    id: '4', title: 'Heat Journey Pack', handle: 'heat-journey-pack',
+    tags: ['heat-4', 'bundle', 'bundles'], availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '38.00', currencyCode: 'USD' as CurrencyCode},
+      maxVariantPrice: {amount: '38.00', currencyCode: 'USD' as CurrencyCode},
+    },
+    images: {nodes: [{id: '7', url: '/ecomm-hero-shot-all packages.png', altText: 'Heat Journey Pack', width: 800, height: 800}]},
+    variants: {nodes: [{id: 'v4', title: 'Bundle', availableForSale: true, price: {amount: '38.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '44.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Size', value: 'Bundle'}]}]},
+  },
+  {
+    id: '5', title: 'Starter Bundle', handle: 'starter-bundle',
+    tags: ['heat-2', 'bundle', 'bundles'], availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '20.00', currencyCode: 'USD' as CurrencyCode},
+      maxVariantPrice: {amount: '20.00', currencyCode: 'USD' as CurrencyCode},
+    },
+    images: {nodes: [{id: '8', url: '/ecomm-hero-shot-one-package.png', altText: 'Starter Bundle', width: 800, height: 800}]},
+    variants: {nodes: [{id: 'v5', title: 'Bundle', availableForSale: true, price: {amount: '20.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '22.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Size', value: 'Bundle'}]}]},
+  },
+  {
+    id: '6', title: 'Reaper Starter', handle: 'reaper-starter',
+    tags: ['heat-5', 'reaper', 'bundle', 'bundles'], availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '22.00', currencyCode: 'USD' as CurrencyCode},
+      maxVariantPrice: {amount: '22.00', currencyCode: 'USD' as CurrencyCode},
+    },
+    images: {nodes: [{id: '9', url: '/zakitos-In_a_still_life_photography_style_a_black_pouch_b5.png', altText: 'Reaper Starter', width: 800, height: 800}]},
+    variants: {nodes: [{id: 'v6', title: 'Bundle', availableForSale: true, price: {amount: '22.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '25.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Size', value: 'Bundle'}]}]},
+  },
+];
+
+const COLLECTION_TITLES: Record<string, string> = {
+  all: 'Shop All',
+  snacks: 'Snacks',
+  bundles: 'Bundles & Gift Sets',
+  new: 'New Arrivals',
+};
+
+const COLLECTION_DESCRIPTIONS: Record<string, string> = {
+  all: 'Every flavor. Every heat level. Real chili, no shortcuts.',
+  snacks: 'Single-serve and resealable bags — bold chili snacks for any occasion.',
+  bundles: 'Bundle up and save. Perfect for gifting or building your heat journey.',
+  new: 'Fresh from the lab. The newest additions to the Zakitos heat scale.',
+};
+
+function getMockCollection(handle: string) {
+  const title = COLLECTION_TITLES[handle] ?? handle.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const description = COLLECTION_DESCRIPTIONS[handle] ?? '';
+
+  // Filter products by collection type
+  const products = handle === 'bundles'
+    ? ALL_MOCK_PRODUCTS.filter((p) => p.tags.includes('bundles'))
+    : handle === 'snacks'
+    ? ALL_MOCK_PRODUCTS.filter((p) => p.tags.includes('snacks'))
+    : ALL_MOCK_PRODUCTS;
+
+  return {
+    id: `mock-${handle}`,
+    handle,
+    title,
+    description,
+    image: null,
+    products: {
+      nodes: products,
+      pageInfo: {hasPreviousPage: false, hasNextPage: false, startCursor: null, endCursor: null},
+    },
+  };
 }
 
 const COLLECTION_QUERY = `#graphql
