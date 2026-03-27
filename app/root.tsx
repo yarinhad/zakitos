@@ -5,7 +5,6 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
-  LiveReload,
 } from '@remix-run/react';
 import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {defer} from '@shopify/remix-oxygen';
@@ -29,12 +28,13 @@ export function links() {
 export async function loader({context}: LoaderFunctionArgs) {
   const {storefront, cart} = context;
 
-  const [cartData] = await Promise.all([cart.get()]);
+  const cartData = await cart.get().catch(() => null);
+  const shop = storefront.query(SHOP_QUERY).catch(() => ({shop: null}));
 
   return defer({
     cart: cartData,
-    shop: storefront.query(SHOP_QUERY),
-    publicStoreDomain: context.env.PUBLIC_STORE_DOMAIN,
+    shop,
+    publicStoreDomain: context.env.PUBLIC_STORE_DOMAIN ?? '',
   });
 }
 
@@ -71,7 +71,6 @@ export default function App() {
         </Analytics.Provider>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
-        <LiveReload nonce={nonce} />
       </body>
     </html>
   );

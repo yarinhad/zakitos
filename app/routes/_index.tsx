@@ -23,8 +23,14 @@ export function meta() {
 export async function loader({context}: LoaderFunctionArgs) {
   const {storefront} = context;
 
-  const featuredProducts = storefront.query(FEATURED_PRODUCTS_QUERY);
-  const collections = storefront.query(FEATURED_COLLECTIONS_QUERY);
+  // Wrap in try/catch so the page renders with mock data when no API credentials are set
+  const featuredProducts = storefront
+    .query(FEATURED_PRODUCTS_QUERY)
+    .catch(() => ({products: {nodes: MOCK_PRODUCTS}}));
+
+  const collections = storefront
+    .query(FEATURED_COLLECTIONS_QUERY)
+    .catch(() => ({collections: {nodes: []}}));
 
   return defer({featuredProducts, collections});
 }
