@@ -2,6 +2,7 @@
   "name": "zakitos-storefront",
   "private": true,
   "sideEffects": false,
+  "type": "module",
   "scripts": {
     "build": "shopify hydrogen build",
     "dev": "shopify hydrogen dev --codegen",
@@ -22,7 +23,7 @@
   "devDependencies": {
     "@remix-run/dev": "2.8.1",
     "@shopify/cli": "^3.56.3",
-    "@shopify/mini-oxygen": "^3.0.4",
+    "@shopify/mini-oxygen": "3.0.6",
     "@shopify/oxygen-workers-types": "^4.0.0",
     "@tailwindcss/forms": "^0.5.7",
     "@types/react": "^18.2.55",
