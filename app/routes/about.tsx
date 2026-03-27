@@ -306,6 +306,133 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* ── Magic Plant Farms — Sourcing Partner ──────────────── */}
+      <section className="py-24 bg-zakitos-dark">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
+              Where Our Chilies Come From
+            </p>
+            <h2 className="font-display text-5xl md:text-7xl text-zakitos-cream tracking-wide leading-none">
+              GROWN AT THE
+              <br />
+              <span className="text-gradient-fire">SOURCE.</span>
+            </h2>
+            <p className="text-zakitos-muted mt-4 max-w-xl mx-auto text-base">
+              Zakitos is powered by Magic Plant Farms — a world-class agricultural
+              partner with decades of experience bringing the finest Capsicum
+              products from farm to table.
+            </p>
+          </div>
+
+          {/* Two-column: intro + location */}
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* About MPF */}
+            <div className="card-dark p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <span className="text-3xl">🌿</span>
+                <h3 className="font-display text-2xl text-zakitos-cream tracking-wide">
+                  MAGIC PLANT FARMS
+                </h3>
+              </div>
+              <div className="space-y-4 text-zakitos-muted text-sm leading-relaxed">
+                <p>
+                  Magic Plant Farms is an international agricultural project management
+                  company specializing in Capsicum products. Through years of experience,
+                  deep-rooted connections, and rigorous knowledge of the supply chain,
+                  they&apos;ve perfected the formula: <strong className="text-zakitos-cream">high-quality agro products
+                  year-round, at the lowest cost, with premium service.</strong>
+                </p>
+                <p>
+                  They grow a wide selection of Capsicums and process a broad variety of
+                  products — helping food companies access a whole world of chili peppers
+                  and spices. Their mission aligns perfectly with ours: develop new
+                  products and spread bold new flavors across the food industry.
+                </p>
+                <p className="text-zakitos-cream italic">
+                  &quot;We provide an extraordinary and economic supply solution to the
+                  agriculture consumer.&quot;
+                </p>
+              </div>
+            </div>
+
+            {/* Location */}
+            <div className="card-dark p-8">
+              <div className="flex items-center gap-3 mb-5">
+                <span className="text-3xl">📍</span>
+                <h3 className="font-display text-2xl text-zakitos-cream tracking-wide">
+                  GLOBAL REACH
+                </h3>
+              </div>
+              <div className="space-y-5 text-zakitos-muted text-sm leading-relaxed">
+                <div className="flex gap-4">
+                  <div
+                    className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center text-lg"
+                    style={{backgroundColor: 'rgba(232,23,11,0.12)', border: '1px solid rgba(232,23,11,0.25)'}}
+                  >
+                    🇺🇸
+                  </div>
+                  <div>
+                    <p className="font-display text-sm text-zakitos-cream tracking-wide mb-1">
+                      US WAREHOUSE — TRI-CITIES, TENNESSEE
+                    </p>
+                    <p>
+                      Located in the scenic Tri-Cities area of Northeastern Tennessee.
+                      Conveniently near multiple transportation terminals, three major
+                      interstates, and Tri-Cities Regional Airport (25 min away) — built
+                      for fast, reliable shipping nationwide.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="divider-fire" />
+
+                <div className="flex gap-4">
+                  <div
+                    className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center text-lg"
+                    style={{backgroundColor: 'rgba(255,184,0,0.12)', border: '1px solid rgba(255,184,0,0.25)'}}
+                  >
+                    🌍
+                  </div>
+                  <div>
+                    <p className="font-display text-sm text-zakitos-cream tracking-wide mb-1">
+                      EXCLUSIVE CROPS — WORLDWIDE
+                    </p>
+                    <p>
+                      Exclusive crops cultivated across <strong className="text-zakitos-warm">Asia, Africa,
+                      South America, and the Middle East.</strong> Each region chosen for
+                      optimal growing conditions that produce the authentic heat and flavor
+                      profile you taste in every Zakitos bag.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Stat strip */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              {stat: '4', label: 'Continents', icon: '🌐'},
+              {stat: '100%', label: 'Capsicum Specialists', icon: '🌶'},
+              {stat: 'Year-Round', label: 'Supply Guarantee', icon: '📦'},
+              {stat: 'Direct', label: 'Farm-to-Bag Sourcing', icon: '🤝'},
+            ].map(({stat, label, icon}) => (
+              <div key={label} className="bg-zakitos-card border border-zakitos-border p-5 text-center">
+                <div className="text-2xl mb-2">{icon}</div>
+                <div className="font-display text-2xl text-zakitos-red mb-1">{stat}</div>
+                <div className="font-mono text-xs text-zakitos-muted tracking-wide uppercase">{label}</div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-zakitos-muted text-xs font-mono mt-8 italic">
+            Powered by Magic Plant Farms — sourcing and shipping worldwide.
+          </p>
+        </div>
+      </section>
+
       {/* ── Photo Gallery ─────────────────────────────────────── */}
       <section className="bg-zakitos-black">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
