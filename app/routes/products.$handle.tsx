@@ -5,7 +5,8 @@ import {
   useFetcher,
   useSearchParams,
 } from '@remix-run/react';
-import {Image, Money, VariantSelector, getSelectedProductOptions} from '@shopify/hydrogen';
+import {Money, VariantSelector, getSelectedProductOptions} from '@shopify/hydrogen';
+import {SafeImage} from '~/components/SafeImage';
 import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
 import {useState, useEffect, useRef} from 'react';
 import {HeatMeter} from '~/components/HeatMeter';
@@ -99,7 +100,7 @@ export default function ProductPage() {
             {/* Main image */}
             <div className="aspect-square bg-zakitos-card relative overflow-hidden">
               {images[activeImage] && (
-                <Image
+                <SafeImage
                   data={images[activeImage]}
                   loading="eager"
                   className="w-full h-full object-contain p-6 transition-opacity duration-300"
@@ -135,7 +136,7 @@ export default function ProductPage() {
                         : 'border-zakitos-border hover:border-zakitos-muted'
                     }`}
                   >
-                    <Image
+                    <SafeImage
                       data={image}
                       loading="lazy"
                       className="w-full h-full object-contain p-1"
@@ -347,7 +348,7 @@ export default function ProductPage() {
                 >
                   <div className="aspect-square bg-zakitos-dark p-4 overflow-hidden">
                     {p.images.nodes[0] && (
-                      <Image
+                      <SafeImage
                         data={p.images.nodes[0]}
                         loading="lazy"
                         className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"

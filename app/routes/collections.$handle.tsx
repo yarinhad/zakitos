@@ -1,6 +1,6 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, Link, useSearchParams} from '@remix-run/react';
-import {Image} from '@shopify/hydrogen';
+import {SafeImage} from '~/components/SafeImage';
 import {ProductCard} from '~/components/ProductCard';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
 import {getHeatLevel} from '~/lib/utils';
@@ -61,7 +61,7 @@ export default function CollectionPage() {
         {/* Background image */}
         {collection.image && (
           <div className="absolute inset-0 opacity-10">
-            <Image
+            <SafeImage
               data={collection.image}
               className="w-full h-full object-cover"
               loading="eager"

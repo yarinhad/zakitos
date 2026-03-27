@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react';
-import {Image, Money} from '@shopify/hydrogen';
+import {Money} from '@shopify/hydrogen';
+import {SafeImage} from '~/components/SafeImage';
 import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 import {HeatBadge} from '~/components/HeatMeter';
 import {getHeatLevel, isOnSale, discountPercent} from '~/lib/utils';
@@ -49,7 +50,7 @@ export function ProductCard({product, loading = 'lazy'}: ProductCardProps) {
         {/* Image container */}
         <div className="product-image-container aspect-product bg-zakitos-card relative">
           {firstImage && (
-            <Image
+            <SafeImage
               data={firstImage}
               loading={loading}
               className="img-fill object-contain p-4"
@@ -58,7 +59,7 @@ export function ProductCard({product, loading = 'lazy'}: ProductCardProps) {
           )}
           {/* Second image on hover */}
           {secondImage && (
-            <Image
+            <SafeImage
               data={secondImage}
               loading="lazy"
               className="product-image-hover img-fill object-contain p-4"

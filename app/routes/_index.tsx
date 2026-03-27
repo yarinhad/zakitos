@@ -1,7 +1,8 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
+import {Money} from '@shopify/hydrogen';
+import {SafeImage} from '~/components/SafeImage';
 import {HeroSection} from '~/components/HeroSection';
 import {ProductCard, ProductCardSkeleton} from '~/components/ProductCard';
 import {UGCCarousel} from '~/components/UGCCarousel';
