@@ -10,11 +10,11 @@ import type {
 } from '@shopify/hydrogen';
 
 export interface Env {
-  SESSION_SECRET: string;
-  PUBLIC_STOREFRONT_API_TOKEN: string;
-  PRIVATE_STOREFRONT_API_TOKEN: string;
-  PUBLIC_STORE_DOMAIN: string;
-  PUBLIC_STOREFRONT_ID: string;
+  SESSION_SECRET?: string;
+  PUBLIC_STOREFRONT_API_TOKEN?: string;
+  PRIVATE_STOREFRONT_API_TOKEN?: string;
+  PUBLIC_STORE_DOMAIN?: string;
+  PUBLIC_STOREFRONT_ID?: string;
   PUBLIC_STOREFRONT_API_VERSION?: string;
   PUBLIC_CHECKOUT_DOMAIN?: string;
 }
@@ -38,11 +38,11 @@ export async function createAppLoadContext(
   const {storefront} = createStorefrontClient({
     cache,
     waitUntil,
-    publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-    privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
-    storeDomain: env.PUBLIC_STORE_DOMAIN,
+    publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN ?? '',
+    privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN ?? '',
+    storeDomain: env.PUBLIC_STORE_DOMAIN ?? 'zakitos.myshopify.com',
     storefrontApiVersion: env.PUBLIC_STOREFRONT_API_VERSION ?? '2024-01',
-    storefrontId: env.PUBLIC_STOREFRONT_ID,
+    storefrontId: env.PUBLIC_STOREFRONT_ID ?? '',
   });
 
   const cart = createCartHandler({

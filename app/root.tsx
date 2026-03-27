@@ -7,7 +7,7 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {defer} from '@shopify/remix-oxygen';
+import {json} from '@shopify/remix-oxygen';
 import {Analytics, useNonce} from '@shopify/hydrogen';
 import stylesheet from '~/styles/app.css?url';
 import {Layout} from '~/components/Layout';
@@ -17,23 +17,22 @@ export function links() {
     {rel: 'stylesheet', href: stylesheet},
     {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
     {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous'},
-    {
-      rel: 'preload',
-      as: 'image',
-      href: '/zakitos-transparent-logo.png',
-    },
+    {rel: 'preload', as: 'image', href: '/zakitos-transparent-logo.png'},
   ];
 }
 
 export async function loader({context}: LoaderFunctionArgs) {
   const {storefront, cart} = context;
 
-  const cartData = await cart.get().catch(() => null);
-  const shop = storefront.query(SHOP_QUERY).catch(() => ({shop: null}));
+  // Await everything — no defer needed in root so Analytics.Provider gets resolved data
+  const [cartData, shopData] = await Promise.all([
+    cart.get().catch(() => null),
+    storefront.query(SHOP_QUERY).catch(() => null),
+  ]);
 
-  return defer({
+  return json({
     cart: cartData,
-    shop,
+    shop: shopData,
     publicStoreDomain: context.env.PUBLIC_STORE_DOMAIN ?? '',
   });
 }
@@ -49,7 +48,7 @@ export function meta() {
 
 export default function App() {
   const nonce = useNonce();
-  const data = useLoaderData<typeof loader>();
+  const {cart, shop, publicStoreDomain} = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
@@ -60,15 +59,22 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-zakitos-black text-zakitos-cream">
-        <Analytics.Provider
-          cart={data.cart as any}
-          shop={data.shop as any}
-          consent={{checkoutDomain: data.publicStoreDomain}}
-        >
-          <Layout cart={data.cart as any}>
+        {shop ? (
+          <Analytics.Provider
+            cart={cart as any}
+            shop={shop as any}
+            consent={{checkoutDomain: publicStoreDomain || 'zakitos.myshopify.com'}}
+          >
+            <Layout cart={cart as any}>
+              <Outlet />
+            </Layout>
+          </Analytics.Provider>
+        ) : (
+          // No Shopify credentials yet — render without analytics
+          <Layout cart={null}>
             <Outlet />
           </Layout>
-        </Analytics.Provider>
+        )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>

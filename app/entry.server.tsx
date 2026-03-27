@@ -11,10 +11,13 @@ export default async function handleRequest(
   remixContext: EntryContext,
   context: AppLoadContext,
 ) {
+  const storeDomain = context.env?.PUBLIC_STORE_DOMAIN || 'zakitos.myshopify.com';
+  const checkoutDomain = context.env?.PUBLIC_CHECKOUT_DOMAIN || storeDomain;
+
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN ?? context.env.PUBLIC_STORE_DOMAIN,
-      storeDomain: context.env.PUBLIC_STORE_DOMAIN,
+      checkoutDomain,
+      storeDomain,
     },
   });
 
