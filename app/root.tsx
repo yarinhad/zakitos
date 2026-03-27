@@ -8,7 +8,7 @@ import {
 } from '@remix-run/react';
 import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {json} from '@shopify/remix-oxygen';
-import {Analytics, useNonce} from '@shopify/hydrogen';
+import {useNonce} from '@shopify/hydrogen';
 import stylesheet from '~/styles/app.css?url';
 import {Layout} from '~/components/Layout';
 
@@ -22,18 +22,13 @@ export function links() {
 }
 
 export async function loader({context}: LoaderFunctionArgs) {
-  const {storefront, cart} = context;
+  const {cart} = context;
 
   // Await everything — no defer needed in root so Analytics.Provider gets resolved data
-  const [cartData, shopData] = await Promise.all([
-    cart.get().catch(() => null),
-    storefront.query(SHOP_QUERY).catch(() => null),
-  ]);
+  const cartData = await cart.get().catch(() => null);
 
   return json({
     cart: cartData,
-    shop: shopData,
-    publicStoreDomain: context.env.PUBLIC_STORE_DOMAIN ?? '',
   });
 }
 
@@ -48,7 +43,7 @@ export function meta() {
 
 export default function App() {
   const nonce = useNonce();
-  const {cart, shop, publicStoreDomain} = useLoaderData<typeof loader>();
+  const {cart} = useLoaderData<typeof loader>();
 
   return (
     <html lang="en">
@@ -59,22 +54,9 @@ export default function App() {
         <Links />
       </head>
       <body className="bg-zakitos-black text-zakitos-cream">
-        {shop ? (
-          <Analytics.Provider
-            cart={cart as any}
-            shop={shop as any}
-            consent={{checkoutDomain: publicStoreDomain || 'zakitos.myshopify.com'}}
-          >
-            <Layout cart={cart as any}>
-              <Outlet />
-            </Layout>
-          </Analytics.Provider>
-        ) : (
-          // No Shopify credentials yet — render without analytics
-          <Layout cart={null}>
-            <Outlet />
-          </Layout>
-        )}
+        <Layout cart={cart as any}>
+          <Outlet />
+        </Layout>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>
@@ -102,22 +84,3 @@ export function ErrorBoundary() {
   );
 }
 
-const SHOP_QUERY = `#graphql
-  query ShopLayout {
-    shop {
-      id
-      name
-      description
-      primaryDomain {
-        url
-      }
-      brand {
-        logo {
-          image {
-            url
-          }
-        }
-      }
-    }
-  }
-`;
