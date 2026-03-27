@@ -166,8 +166,8 @@ const HEAT_TIERS = [
   {
     level: 3,
     name: 'Habanero',
-    tagline: 'Now we're talking.',
-    description: 'Fruity, tropical heat that builds. You'll sweat. You'll love it.',
+    tagline: "Now we're talking.",
+    description: "Fruity, tropical heat that builds. You'll sweat. You'll love it.",
     emoji: '🔥',
     color: '#FF5500',
     handle: 'garlic-chili',

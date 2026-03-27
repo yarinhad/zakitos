@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
+import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 import {HeatBadge} from '~/components/HeatMeter';
 import {getHeatLevel, isOnSale, discountPercent} from '~/lib/utils';
 
@@ -11,8 +12,8 @@ interface ProductCardProps {
     tags: string[];
     availableForSale: boolean;
     priceRange: {
-      minVariantPrice: {amount: string; currencyCode: string};
-      maxVariantPrice: {amount: string; currencyCode: string};
+      minVariantPrice: {amount: string; currencyCode: CurrencyCode};
+      maxVariantPrice: {amount: string; currencyCode: CurrencyCode};
     };
     images: {
       nodes: Array<{id?: string; url: string; altText?: string | null; width?: number | null; height?: number | null}>;
@@ -21,8 +22,8 @@ interface ProductCardProps {
       nodes: Array<{
         id: string;
         availableForSale: boolean;
-        price: {amount: string; currencyCode: string};
-        compareAtPrice?: {amount: string; currencyCode: string} | null;
+        price: {amount: string; currencyCode: CurrencyCode};
+        compareAtPrice?: {amount: string; currencyCode: CurrencyCode} | null;
         selectedOptions: Array<{name: string; value: string}>;
       }>;
     };

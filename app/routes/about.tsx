@@ -124,7 +124,7 @@ export default function AboutPage() {
               {
                 icon: '⚡',
                 title: 'Boldness',
-                description: 'We don't do mild. In product, brand, and culture.',
+                description: "We don't do mild. In product, brand, and culture.",
                 color: '#E8170B',
               },
               {

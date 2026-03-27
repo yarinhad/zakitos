@@ -21,7 +21,8 @@
       "~/*": ["./app/*"]
     },
     "types": [
-      "@shopify/oxygen-workers-types"
+      "@shopify/oxygen-workers-types",
+      "vite/client"
     ]
   }
 }

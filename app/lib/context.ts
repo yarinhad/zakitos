@@ -38,7 +38,6 @@ export async function createAppLoadContext(
   const {storefront} = createStorefrontClient({
     cache,
     waitUntil,
-    request,
     publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
     privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
     storeDomain: env.PUBLIC_STORE_DOMAIN,

@@ -1,6 +1,7 @@
 import {useFetcher} from '@remix-run/react';
 import {useEffect, useState} from 'react';
 import {Money} from '@shopify/hydrogen';
+import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 import {HeatBadge} from '~/components/HeatMeter';
 
 interface StickyAddToCartProps {
@@ -15,8 +16,8 @@ interface StickyAddToCartProps {
   selectedVariant: {
     id: string;
     availableForSale: boolean;
-    price: {amount: string; currencyCode: string};
-    compareAtPrice?: {amount: string; currencyCode: string} | null;
+    price: {amount: string; currencyCode: CurrencyCode};
+    compareAtPrice?: {amount: string; currencyCode: CurrencyCode} | null;
   } | null;
   heatLevel: number;
   quantity: number;

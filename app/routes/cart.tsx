@@ -34,10 +34,7 @@ export async function action({request, context}: ActionFunctionArgs) {
       result = await cart.removeLines(inputs.lineIds);
       break;
     case CartForm.ACTIONS.DiscountCodesUpdate: {
-      const formDiscountCode = inputs.discountCode;
-      const discountCodes = (
-        formDiscountCode ? [formDiscountCode] : []
-      ) as string[];
+      const discountCodes = inputs.discountCodes as string[];
       result = await cart.updateDiscountCodes(discountCodes);
       break;
     }
@@ -253,7 +250,7 @@ function CartSummary({cart}: {cart: any}) {
             <CartForm
               route="/cart"
               action={CartForm.ACTIONS.DiscountCodesUpdate}
-              inputs={{discountCode: ''}}
+              inputs={{discountCodes: []}}
             >
               <button type="submit" className="text-zakitos-red text-xs hover:underline">
                 Remove
@@ -268,7 +265,7 @@ function CartSummary({cart}: {cart: any}) {
         <CartForm
           route="/cart"
           action={CartForm.ACTIONS.DiscountCodesUpdate}
-          inputs={{discountCode}}
+          inputs={{discountCodes: [discountCode]}}
         >
           <div className="flex gap-0">
             <input

@@ -61,11 +61,11 @@ export default function App() {
       </head>
       <body className="bg-zakitos-black text-zakitos-cream">
         <Analytics.Provider
-          cart={data.cart}
-          shop={data.shop}
+          cart={data.cart as any}
+          shop={data.shop as any}
           consent={{checkoutDomain: data.publicStoreDomain}}
         >
-          <Layout cart={data.cart}>
+          <Layout cart={data.cart as any}>
             <Outlet />
           </Layout>
         </Analytics.Provider>

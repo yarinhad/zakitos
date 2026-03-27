@@ -1,5 +1,6 @@
 import {Link} from '@remix-run/react';
 import {Money} from '@shopify/hydrogen';
+import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 import {HeatBadge} from '~/components/HeatMeter';
 
 interface Bundle {
@@ -9,8 +10,8 @@ interface Bundle {
   savings: string;
   badge?: string;
   items: string[];
-  price: {amount: string; currencyCode: string};
-  compareAtPrice?: {amount: string; currencyCode: string};
+  price: {amount: string; currencyCode: CurrencyCode};
+  compareAtPrice?: {amount: string; currencyCode: CurrencyCode};
   handle: string;
   heatLevel: number;
   icon: string;
@@ -25,8 +26,8 @@ const BUNDLES: Bundle[] = [
     description: 'New to the heat? Start here.',
     savings: 'Save 10%',
     items: ['Classic Chili ×1', 'Garlic Chili ×1'],
-    price: {amount: '20.00', currencyCode: 'USD'},
-    compareAtPrice: {amount: '22.00', currencyCode: 'USD'},
+    price: {amount: '20.00', currencyCode: 'USD' as CurrencyCode},
+    compareAtPrice: {amount: '22.00', currencyCode: 'USD' as CurrencyCode},
     handle: 'starter-bundle',
     heatLevel: 2,
     icon: '🌶',
@@ -38,8 +39,8 @@ const BUNDLES: Bundle[] = [
     savings: 'Save 15%',
     badge: 'Most Popular',
     items: ['Classic ×1', 'Garlic ×1', 'Habanero ×1', 'Reaper ×1'],
-    price: {amount: '38.00', currencyCode: 'USD'},
-    compareAtPrice: {amount: '44.00', currencyCode: 'USD'},
+    price: {amount: '38.00', currencyCode: 'USD' as CurrencyCode},
+    compareAtPrice: {amount: '44.00', currencyCode: 'USD' as CurrencyCode},
     handle: 'heat-journey-pack',
     heatLevel: 4,
     icon: '🔥',
@@ -51,8 +52,8 @@ const BUNDLES: Bundle[] = [
     description: 'You asked for maximum heat. Here it is.',
     savings: 'Save 12%',
     items: ['Extreme Reaper ×1', 'Classic ×1', 'Collectible sticker'],
-    price: {amount: '22.00', currencyCode: 'USD'},
-    compareAtPrice: {amount: '25.00', currencyCode: 'USD'},
+    price: {amount: '22.00', currencyCode: 'USD' as CurrencyCode},
+    compareAtPrice: {amount: '25.00', currencyCode: 'USD' as CurrencyCode},
     handle: 'reaper-starter',
     heatLevel: 5,
     icon: '💀',
