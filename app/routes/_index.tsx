@@ -113,8 +113,11 @@ export default function Homepage() {
       {/* ── UGC Wall ─────────────────────────────────────────── */}
       <UGCCarousel />
 
-      {/* ── Cinematic Video ──────────────────────────────────── */}
-      <CinematicVideoSection />
+      {/* ── Cinematic Video 1 ────────────────────────────────── */}
+      <CinematicVideoSection src="/hero-cinematic.mp4" headline="BOLD BY" highlight="NATURE." tag="The Craft" />
+
+      {/* ── Cinematic Video 2 ────────────────────────────────── */}
+      <CinematicVideoSection src="/hero-cinematic2.mp4" headline="NO" highlight="SHORTCUTS." tag="The Standard" />
 
       {/* ── Bundles ──────────────────────────────────────────── */}
       <BundleSelector />
@@ -410,32 +413,38 @@ function FlavorQuizCTA() {
 }
 
 /* ─── Cinematic Video Section ─────────────────────────────────────── */
-function CinematicVideoSection() {
+function CinematicVideoSection({
+  src,
+  headline,
+  highlight,
+  tag,
+}: {
+  src: string;
+  headline: string;
+  highlight: string;
+  tag: string;
+}) {
   return (
     <section className="relative bg-zakitos-black overflow-hidden">
-      {/* Full-bleed video */}
       <div className="relative w-full aspect-video max-h-[85vh]">
         <video
-          src="/hero-cinematic.mp4"
+          src={src}
           autoPlay
           muted
           loop
           playsInline
           className="w-full h-full object-cover"
         />
-        {/* Gradient vignette */}
         <div className="absolute inset-0 bg-gradient-to-t from-zakitos-black via-transparent to-zakitos-black/40 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-r from-zakitos-black/30 via-transparent to-zakitos-black/30 pointer-events-none" />
-
-        {/* Centered overlay text */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pointer-events-none">
           <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-3">
-            The Craft
+            {tag}
           </p>
           <h2 className="font-display text-5xl md:text-7xl lg:text-8xl text-zakitos-cream tracking-wide leading-none drop-shadow-2xl">
-            BOLD BY
+            {headline}
             <br />
-            <span className="text-gradient-fire">NATURE.</span>
+            <span className="text-gradient-fire">{highlight}</span>
           </h2>
         </div>
       </div>
