@@ -12,61 +12,72 @@ interface UGCPost {
   platform: 'tiktok' | 'instagram';
 }
 
-// Mock UGC data — replace with real API integration (e.g. Taggbox, Yotpo)
+// UGC data using real brand social imagery
 const MOCK_UGC: UGCPost[] = [
   {
     id: '1',
-    username: 'MikeHeatFreak',
-    handle: '@mikeheatfreak',
-    avatar: '/ugc-avatar-1.jpg',
-    image: '/ecomm-detail-lifestyle-closeup.png',
-    caption: "Level 5 Reaper and I'm still alive?? @zakitos you've created a MONSTER 🔥🔥",
+    username: 'ZakitosOfficial',
+    handle: '@zakitos',
+    avatar: '/zakitos-logo.png',
+    image: '/social-1.jpg',
+    caption: "Dragon Fire Blend — not for the faint-hearted. Are you brave enough? 🔥",
     likes: 4821,
-    heatReaction: '💀 RIP my tongue',
-    platform: 'tiktok',
+    heatReaction: '💀 Dragon-level heat',
+    platform: 'instagram',
   },
   {
     id: '2',
-    username: 'SarahSpiceQueen',
-    handle: '@sarahspicequeen',
-    avatar: '/ugc-avatar-2.jpg',
-    image: '/ecomm-hero-shot-one-package.png',
-    caption: 'Finally a snack that respects my heat tolerance. This is IT.',
+    username: 'ZakitosOfficial',
+    handle: '@zakitos',
+    avatar: '/zakitos-logo.png',
+    image: '/social-2.jpg',
+    caption: 'Close-up never lies. Real chili. Real texture. Real heat. 🌶',
     likes: 2340,
     heatReaction: '🔥 Pure fire',
     platform: 'instagram',
   },
   {
     id: '3',
-    username: 'ChiliDave',
-    handle: '@chilidave',
-    avatar: '/ugc-avatar-3.jpg',
-    image: '/zakitos-1-pack-package.png',
-    caption: 'Garlic Chili flavor hits DIFFERENT. Already ordered 3 bags 😭',
-    likes: 1987,
-    heatReaction: '🧄🌶 OBSESSED',
-    platform: 'instagram',
+    username: 'ZakitosOfficial',
+    handle: '@zakitos',
+    avatar: '/zakitos-logo.png',
+    image: '/social-3.jpg',
+    caption: 'The full lineup. One for every level of courage. Which one are you?',
+    likes: 3987,
+    heatReaction: '🌶 Full heat scale',
+    platform: 'tiktok',
   },
   {
     id: '4',
-    username: 'TastyTorture',
-    handle: '@tastytorture',
-    avatar: '/ugc-avatar-4.jpg',
-    image: '/ecomm-hero-shot.png',
-    caption: 'The #ZakitosChallenge is NO JOKE. Rated it 9/10 heat. Send help.',
+    username: 'ZakitosOfficial',
+    handle: '@zakitos',
+    avatar: '/zakitos-logo.png',
+    image: '/social-4.png',
+    caption: 'When the heat hits different. #ZakitosChallenge 🔥🔥🔥',
     likes: 8102,
-    heatReaction: '🚨 I need water',
+    heatReaction: '🚨 Send help',
     platform: 'tiktok',
   },
   {
     id: '5',
-    username: 'FoodieJessica',
-    handle: '@foodiejessica',
-    avatar: '/ugc-avatar-5.jpg',
-    image: '/zakitos-5-pack-package.png',
-    caption: 'Gift set is perfect for my spice-head boyfriend. Packaging is 🔥🔥🔥',
-    likes: 1234,
-    heatReaction: '🎁 Best gift',
+    username: 'ZakitosOfficial',
+    handle: '@zakitos',
+    avatar: '/zakitos-logo.png',
+    image: '/social-6.png',
+    caption: 'Bold by design. The dragon never sleeps. 🐉',
+    likes: 5431,
+    heatReaction: '💀 Legendary',
+    platform: 'instagram',
+  },
+  {
+    id: '6',
+    username: 'ZakitosOfficial',
+    handle: '@zakitos',
+    avatar: '/zakitos-logo.png',
+    image: '/social-7.jpg',
+    caption: 'Art meets heat. The Zakitos universe is expanding. 🌶🐉',
+    likes: 6230,
+    heatReaction: '🔥 Iconic',
     platform: 'instagram',
   },
 ];
@@ -92,7 +103,7 @@ export function UGCCarousel() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
           {MOCK_UGC.map((post, index) => (
             <UGCCard
               key={post.id}
