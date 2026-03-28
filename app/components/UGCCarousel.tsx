@@ -117,7 +117,7 @@ export function UGCCarousel() {
         {/* CTA */}
         <div className="text-center mt-10">
           <a
-            href="https://instagram.com/explore/tags/zakitoschallenge"
+            href="https://www.instagram.com/zakitos_snacks"
             target="_blank"
             rel="noopener noreferrer"
             className="btn-outline-fire inline-flex items-center gap-2"
