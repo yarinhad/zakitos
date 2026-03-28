@@ -40,7 +40,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <img
-              src="/zakitos-transparent-logo.png"
+              src="/zakitos-logo.png"
               alt="Zakitos"
               className="h-8 w-auto mb-4"
             />
@@ -121,6 +121,14 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <a
+                  href="mailto:support@zakitos.com"
+                  className="text-zakitos-muted text-sm hover:text-zakitos-cream transition-colors"
+                >
+                  support@zakitos.com
+                </a>
+              </li>
             </ul>
           </div>
         </div>
