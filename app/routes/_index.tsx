@@ -41,7 +41,7 @@ export default function Homepage() {
   return (
     <>
       {/* ── Hero ──────────────────────────────────────────────── */}
-      <HeroSection imageSrc="/ecomm-hero-shot.png" />
+      <HeroSection videoSrc="/hero.mp4" />
 
       {/* ── Marquee Band ─────────────────────────────────────── */}
       <MarqueeBand />

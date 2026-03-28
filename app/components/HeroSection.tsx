@@ -30,7 +30,7 @@ export function HeroSection({
             muted
             loop
             playsInline
-            className="w-full h-full object-cover opacity-40"
+            className="w-full h-full object-cover opacity-70"
           />
         ) : (
           <img

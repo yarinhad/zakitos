@@ -34,13 +34,13 @@ export function Header({cart}: HeaderProps) {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-24">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 flex-shrink-0" prefetch="intent">
               <img
-                src="/zakitos-transparent-logo.png"
+                src="/zakitos-logo.png"
                 alt="Zakitos"
-                className="h-9 w-auto"
+                className="h-16 w-auto"
                 loading="eager"
               />
             </Link>

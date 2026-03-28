@@ -17,7 +17,7 @@ export function links() {
     {rel: 'stylesheet', href: stylesheet},
     {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
     {rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous'},
-    {rel: 'preload', as: 'image', href: '/zakitos-transparent-logo.png'},
+    {rel: 'preload', as: 'image', href: '/zakitos-logo.png'},
   ];
 }
 
