@@ -18,44 +18,44 @@ interface Bundle {
   popular?: boolean;
 }
 
-// Static bundle definitions — can be driven from Shopify metaobjects
+// Pack size options
 const BUNDLES: Bundle[] = [
   {
-    id: 'starter',
-    title: 'Starter Bundle',
-    description: 'New to the heat? Start here.',
-    savings: 'Save 10%',
-    items: ['Classic Chili ×1', 'Garlic Chili ×1'],
-    price: {amount: '20.00', currencyCode: 'USD' as CurrencyCode},
-    compareAtPrice: {amount: '22.00', currencyCode: 'USD' as CurrencyCode},
-    handle: 'starter-bundle',
-    heatLevel: 2,
+    id: '1-pack',
+    title: '1-Pack',
+    description: 'One bag. Try it, love it, come back for more.',
+    savings: '',
+    items: ['1 × Zakitos chili snack bag', 'Perfect for first-timers'],
+    price: {amount: '9.00', currencyCode: 'USD' as CurrencyCode},
+    compareAtPrice: undefined,
+    handle: '1-pack',
+    heatLevel: 3,
     icon: '🌶',
   },
   {
-    id: 'journey',
-    title: 'Heat Journey Pack',
-    description: '4 bags across the full heat scale. For the bold.',
+    id: '5-pack',
+    title: '5-Pack',
+    description: 'Five bags. Stock your stash and save 15%.',
     savings: 'Save 15%',
     badge: 'Most Popular',
-    items: ['Classic ×1', 'Garlic ×1', 'Habanero ×1', 'Reaper ×1'],
+    items: ['5 × Zakitos chili snack bags', 'Save vs. buying singles', 'Free shipping eligible'],
     price: {amount: '38.00', currencyCode: 'USD' as CurrencyCode},
-    compareAtPrice: {amount: '44.00', currencyCode: 'USD' as CurrencyCode},
-    handle: 'heat-journey-pack',
-    heatLevel: 4,
+    compareAtPrice: {amount: '45.00', currencyCode: 'USD' as CurrencyCode},
+    handle: '5-pack',
+    heatLevel: 3,
     icon: '🔥',
     popular: true,
   },
   {
-    id: 'reaper',
-    title: 'Reaper Starter',
-    description: 'You asked for maximum heat. Here it is.',
-    savings: 'Save 12%',
-    items: ['Extreme Reaper ×1', 'Classic ×1', 'Collectible sticker'],
-    price: {amount: '22.00', currencyCode: 'USD' as CurrencyCode},
-    compareAtPrice: {amount: '25.00', currencyCode: 'USD' as CurrencyCode},
-    handle: 'reaper-starter',
-    heatLevel: 5,
+    id: '24-pack',
+    title: '24-Pack',
+    description: 'Go all in. Bulk pricing, over a month of daily heat.',
+    savings: 'Save 28%',
+    items: ['24 × Zakitos chili snack bags', 'Best price per bag', 'Free shipping included'],
+    price: {amount: '155.00', currencyCode: 'USD' as CurrencyCode},
+    compareAtPrice: {amount: '216.00', currencyCode: 'USD' as CurrencyCode},
+    handle: '24-pack',
+    heatLevel: 3,
     icon: '💀',
   },
 ];
@@ -70,12 +70,12 @@ export function BundleSelector({horizontal = false}: BundleSelectorProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
-            Build Your Pack
+            Pick Your Pack
           </p>
           <h2 className="font-display text-5xl md:text-6xl text-zakitos-cream tracking-wide">
-            CHOOSE YOUR
+            MORE BAGS,
             <br />
-            <span className="text-gradient-fire">HEAT JOURNEY</span>
+            <span className="text-gradient-fire">MORE SAVINGS</span>
           </h2>
         </div>
 
@@ -182,7 +182,7 @@ export function BundleUpsell({currentHandle}: {currentHandle: string}) {
   return (
     <div className="mt-8 p-5 bg-zakitos-card border border-zakitos-border">
       <p className="font-display text-sm tracking-widest uppercase text-zakitos-orange mb-4">
-        🔥 Complete the Experience
+        🔥 More Pack Options
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {relatedBundles.map((bundle) => (

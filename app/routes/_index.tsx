@@ -7,7 +7,6 @@ import {HeroSection} from '~/components/HeroSection';
 import {ProductCard, ProductCardSkeleton} from '~/components/ProductCard';
 import {UGCCarousel} from '~/components/UGCCarousel';
 import {BundleSelector} from '~/components/BundleSelector';
-import {HeatMeter} from '~/components/HeatMeter';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
 
 export function meta() {
@@ -157,47 +156,49 @@ function MarqueeBand() {
   );
 }
 
-/* ─── Heat Scale Explorer ─────────────────────────────────────────── */
-const HEAT_TIERS = [
+/* ─── Pack Options ────────────────────────────────────────────────── */
+const PACK_OPTIONS = [
   {
-    level: 1,
-    name: 'Jalapeño',
-    tagline: 'A warm welcome.',
-    description: 'Bright, citrusy heat with a satisfying snack crunch. The gateway drug.',
+    handle: '1-pack',
+    title: '1-Pack',
+    tagline: 'Try it out.',
+    description: 'One bag of bold dried chili strips. The first hit is free.',
     emoji: '🌶',
     color: '#FFB800',
-    handle: 'classic-chili',
+    price: '$9',
+    savings: null,
+    badge: null,
     image: '/zakitos-1-pack-package.png',
-    shu: '500–2,500 SHU',
   },
   {
-    level: 3,
-    name: 'Habanero',
-    tagline: "Now we're talking.",
-    description: "Fruity, tropical heat that builds. You'll sweat. You'll love it.",
+    handle: '5-pack',
+    title: '5-Pack',
+    tagline: 'Stock up.',
+    description: 'Five bags. Enough to share — or not. Save 15% vs buying singles.',
     emoji: '🔥',
     color: '#FF5500',
-    handle: 'garlic-chili',
+    price: '$38',
+    savings: 'Save 15%',
+    badge: 'Most Popular',
     image: '/zakitos-5-pack-package.png',
-    shu: '100,000–350,000 SHU',
   },
   {
-    level: 5,
-    name: 'Reaper',
-    tagline: 'Not for the faint-hearted.',
-    description: 'The Carolina Reaper. Maximum heat. Respect is mandatory.',
+    handle: '24-pack',
+    title: '24-Pack',
+    tagline: 'Go all in.',
+    description: 'The full arsenal. Bulk pricing. Over a month of daily heat.',
     emoji: '💀',
     color: '#E8170B',
-    handle: 'extreme-reaper',
+    price: '$155',
+    savings: 'Save 28%',
+    badge: 'Best Value',
     image: '/zakitos-24-pack-package.png',
-    shu: '1,000,000+ SHU',
   },
 ];
 
 function HeatScaleSection() {
   return (
     <section className="py-24 bg-zakitos-black noise-overlay relative overflow-hidden">
-      {/* Background element */}
       <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[20rem] font-display text-zakitos-red/5 pointer-events-none select-none leading-none">
         🌶
       </div>
@@ -205,63 +206,69 @@ function HeatScaleSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
           <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
-            The Heat Scale
+            Choose Your Pack
           </p>
           <h2 className="font-display text-5xl md:text-7xl text-zakitos-cream tracking-wide leading-none">
-            FIND YOUR
+            HOW MUCH
             <br />
-            <span className="text-gradient-fire">THRESHOLD</span>
+            <span className="text-gradient-fire">HEAT DO YOU NEED?</span>
           </h2>
           <p className="text-zakitos-muted mt-4 max-w-md mx-auto">
-            We have 5 tiers, from warm to weapon-grade. Where does your courage stop?
+            One bag to start, five to commit, twenty-four to go full Zakitos.
           </p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {HEAT_TIERS.map((tier) => (
+          {PACK_OPTIONS.map((pack) => (
             <Link
-              key={tier.level}
-              to={`/products/${tier.handle}`}
+              key={pack.handle}
+              to={`/products/${pack.handle}`}
               prefetch="intent"
-              className="group card-dark p-6 text-left hover:border-zakitos-red/60 transition-all duration-300"
+              className="group card-dark p-6 text-left hover:border-zakitos-red/60 transition-all duration-300 relative"
             >
-              {/* Tier image */}
+              {pack.badge && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="badge-fire text-xs px-3 py-1 whitespace-nowrap">
+                    {pack.badge}
+                  </span>
+                </div>
+              )}
+
               <div className="aspect-square bg-zakitos-dark mb-5 overflow-hidden flex items-center justify-center">
                 <img
-                  src={tier.image}
-                  alt={tier.name}
+                  src={pack.image}
+                  alt={pack.title}
                   className="w-3/4 h-3/4 object-contain transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
               </div>
 
-              {/* Tier info */}
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <div className="font-mono text-xs tracking-widest uppercase mb-1" style={{color: tier.color}}>
-                    Level {tier.level}
-                  </div>
                   <h3 className="font-display text-3xl text-zakitos-cream tracking-wide">
-                    {tier.name}
+                    {pack.title}
                   </h3>
-                  <p className="text-zakitos-warm text-sm mt-0.5 italic">{tier.tagline}</p>
+                  <p className="text-zakitos-warm text-sm mt-0.5 italic">{pack.tagline}</p>
                 </div>
-                <span className="text-3xl">{tier.emoji}</span>
+                <span className="text-3xl">{pack.emoji}</span>
               </div>
 
               <p className="text-zakitos-muted text-sm leading-relaxed mb-4">
-                {tier.description}
+                {pack.description}
               </p>
 
-              <HeatMeter level={tier.level} showLabel={false} size="sm" />
-
               <div className="flex items-center justify-between mt-4">
-                <span className="font-mono text-xs text-zakitos-muted">{tier.shu}</span>
+                <div>
+                  <span className="font-mono text-xl text-zakitos-cream">{pack.price}</span>
+                  {pack.savings && (
+                    <span className="ml-2 text-xs font-mono text-zakitos-ember">{pack.savings}</span>
+                  )}
+                </div>
                 <span
                   className="font-display text-sm tracking-wide group-hover:underline"
-                  style={{color: tier.color}}
+                  style={{color: pack.color}}
                 >
-                  Try It →
+                  Shop Now →
                 </span>
               </div>
             </Link>
@@ -434,94 +441,38 @@ const FEATURED_COLLECTIONS_QUERY = `#graphql
 const MOCK_PRODUCTS = [
   {
     id: 'gid://shopify/Product/1',
-    title: 'Classic Chili',
-    handle: 'classic-chili',
-    tags: ['heat-2', 'classic', 'bestseller'],
+    title: 'Zakitos 1-Pack',
+    handle: '1-pack',
+    tags: ['snacks', 'bestseller'],
     availableForSale: true,
     priceRange: {
-      minVariantPrice: {amount: '8.00', currencyCode: 'USD'},
-      maxVariantPrice: {amount: '12.00', currencyCode: 'USD'},
+      minVariantPrice: {amount: '9.00', currencyCode: 'USD'},
+      maxVariantPrice: {amount: '9.00', currencyCode: 'USD'},
     },
     images: {
       nodes: [
-        {id: '1', url: '/zakitos-1-pack-package.png', altText: 'Classic Chili', width: 800, height: 800},
-        {id: '2', url: '/ecomm-hero-shot-one-package.png', altText: 'Classic Chili Lifestyle', width: 800, height: 800},
+        {id: '1', url: '/zakitos-1-pack-package.png', altText: 'Zakitos 1-Pack', width: 800, height: 800},
+        {id: '2', url: '/ecomm-hero-shot-one-package.png', altText: 'Zakitos 1-Pack Lifestyle', width: 800, height: 800},
       ],
     },
     variants: {
       nodes: [
         {
           id: 'gid://shopify/ProductVariant/1',
-          title: 'Single Pack',
+          title: '1-Pack',
           availableForSale: true,
-          price: {amount: '8.00', currencyCode: 'USD'},
+          price: {amount: '9.00', currencyCode: 'USD'},
           compareAtPrice: null,
-          selectedOptions: [{name: 'Size', value: 'Single Pack'}],
+          selectedOptions: [{name: 'Pack Size', value: '1-Pack'}],
         },
       ],
     },
   },
   {
     id: 'gid://shopify/Product/2',
-    title: 'Garlic Chili',
-    handle: 'garlic-chili',
-    tags: ['heat-4', 'garlic', 'new'],
-    availableForSale: true,
-    priceRange: {
-      minVariantPrice: {amount: '8.00', currencyCode: 'USD'},
-      maxVariantPrice: {amount: '12.00', currencyCode: 'USD'},
-    },
-    images: {
-      nodes: [
-        {id: '3', url: '/zakitos-5-pack-package.png', altText: 'Garlic Chili', width: 800, height: 800},
-      ],
-    },
-    variants: {
-      nodes: [
-        {
-          id: 'gid://shopify/ProductVariant/2',
-          title: 'Single Pack',
-          availableForSale: true,
-          price: {amount: '8.00', currencyCode: 'USD'},
-          compareAtPrice: {amount: '10.00', currencyCode: 'USD'},
-          selectedOptions: [{name: 'Size', value: 'Single Pack'}],
-        },
-      ],
-    },
-  },
-  {
-    id: 'gid://shopify/Product/3',
-    title: 'Extreme Reaper',
-    handle: 'extreme-reaper',
-    tags: ['heat-5', 'reaper'],
-    availableForSale: true,
-    priceRange: {
-      minVariantPrice: {amount: '10.00', currencyCode: 'USD'},
-      maxVariantPrice: {amount: '14.00', currencyCode: 'USD'},
-    },
-    images: {
-      nodes: [
-        {id: '5', url: '/zakitos-24-pack-package.png', altText: 'Extreme Reaper', width: 800, height: 800},
-      ],
-    },
-    variants: {
-      nodes: [
-        {
-          id: 'gid://shopify/ProductVariant/3',
-          title: 'Single Pack',
-          availableForSale: true,
-          price: {amount: '10.00', currencyCode: 'USD'},
-          compareAtPrice: null,
-          selectedOptions: [{name: 'Size', value: 'Single Pack'}],
-        },
-      ],
-    },
-  },
-  {
-    id: 'gid://shopify/Product/4',
-    title: 'Heat Journey Pack',
-    handle: 'heat-journey-pack',
-    tags: ['heat-4', 'bundle', 'bestseller'],
+    title: 'Zakitos 5-Pack',
+    handle: '5-pack',
+    tags: ['snacks', 'bestseller'],
     availableForSale: true,
     priceRange: {
       minVariantPrice: {amount: '38.00', currencyCode: 'USD'},
@@ -529,18 +480,48 @@ const MOCK_PRODUCTS = [
     },
     images: {
       nodes: [
-        {id: '7', url: '/ecomm-hero-shot-all packages.png', altText: 'Heat Journey Pack', width: 800, height: 800},
+        {id: '3', url: '/zakitos-5-pack-package.png', altText: 'Zakitos 5-Pack', width: 800, height: 800},
+        {id: '4', url: '/ecomm-hero-shot-all packages.png', altText: 'Zakitos 5-Pack Lifestyle', width: 800, height: 800},
       ],
     },
     variants: {
       nodes: [
         {
-          id: 'gid://shopify/ProductVariant/4',
-          title: 'Bundle',
+          id: 'gid://shopify/ProductVariant/2',
+          title: '5-Pack',
           availableForSale: true,
           price: {amount: '38.00', currencyCode: 'USD'},
-          compareAtPrice: {amount: '44.00', currencyCode: 'USD'},
-          selectedOptions: [{name: 'Size', value: 'Bundle'}],
+          compareAtPrice: {amount: '45.00', currencyCode: 'USD'},
+          selectedOptions: [{name: 'Pack Size', value: '5-Pack'}],
+        },
+      ],
+    },
+  },
+  {
+    id: 'gid://shopify/Product/3',
+    title: 'Zakitos 24-Pack',
+    handle: '24-pack',
+    tags: ['snacks', 'bulk'],
+    availableForSale: true,
+    priceRange: {
+      minVariantPrice: {amount: '155.00', currencyCode: 'USD'},
+      maxVariantPrice: {amount: '155.00', currencyCode: 'USD'},
+    },
+    images: {
+      nodes: [
+        {id: '5', url: '/zakitos-24-pack-package.png', altText: 'Zakitos 24-Pack', width: 800, height: 800},
+        {id: '6', url: '/ecomm-hero-shot-all packages.png', altText: 'Zakitos 24-Pack Lifestyle', width: 800, height: 800},
+      ],
+    },
+    variants: {
+      nodes: [
+        {
+          id: 'gid://shopify/ProductVariant/3',
+          title: '24-Pack',
+          availableForSale: true,
+          price: {amount: '155.00', currencyCode: 'USD'},
+          compareAtPrice: {amount: '216.00', currencyCode: 'USD'},
+          selectedOptions: [{name: 'Pack Size', value: '24-Pack'}],
         },
       ],
     },
