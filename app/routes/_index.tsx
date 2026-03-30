@@ -24,9 +24,22 @@ export async function loader({context}: LoaderFunctionArgs) {
   const {storefront} = context;
 
   // Wrap in try/catch so the page renders with mock data when no API credentials are set
-  const featuredProducts = storefront
+  const featuredProductsRaw = storefront
     .query(FEATURED_PRODUCTS_QUERY)
     .catch(() => ({products: {nodes: MOCK_PRODUCTS}}));
+
+  // Mark all products out of stock
+  const featuredProducts = featuredProductsRaw.then((data: any) => ({
+    products: {
+      nodes: data.products.nodes.map((p: any) => ({
+        ...p,
+        availableForSale: false,
+        variants: p.variants
+          ? {nodes: p.variants.nodes.map((v: any) => ({...v, availableForSale: false}))}
+          : p.variants,
+      })),
+    },
+  }));
 
   const collections = storefront
     .query(FEATURED_COLLECTIONS_QUERY)
@@ -490,7 +503,7 @@ const MOCK_PRODUCTS = [
     title: 'Zakitos 1-Pack',
     handle: '1-pack',
     tags: ['snacks', 'bestseller'],
-    availableForSale: true,
+    availableForSale: false,
     priceRange: {
       minVariantPrice: {amount: '9.00', currencyCode: 'USD'},
       maxVariantPrice: {amount: '9.00', currencyCode: 'USD'},
@@ -506,7 +519,7 @@ const MOCK_PRODUCTS = [
         {
           id: 'gid://shopify/ProductVariant/1',
           title: '1-Pack',
-          availableForSale: true,
+          availableForSale: false,
           price: {amount: '9.00', currencyCode: 'USD'},
           compareAtPrice: null,
           selectedOptions: [{name: 'Pack Size', value: '1-Pack'}],
@@ -519,7 +532,7 @@ const MOCK_PRODUCTS = [
     title: 'Zakitos 5-Pack',
     handle: '5-pack',
     tags: ['snacks', 'bestseller'],
-    availableForSale: true,
+    availableForSale: false,
     priceRange: {
       minVariantPrice: {amount: '38.00', currencyCode: 'USD'},
       maxVariantPrice: {amount: '38.00', currencyCode: 'USD'},
@@ -535,7 +548,7 @@ const MOCK_PRODUCTS = [
         {
           id: 'gid://shopify/ProductVariant/2',
           title: '5-Pack',
-          availableForSale: true,
+          availableForSale: false,
           price: {amount: '38.00', currencyCode: 'USD'},
           compareAtPrice: {amount: '45.00', currencyCode: 'USD'},
           selectedOptions: [{name: 'Pack Size', value: '5-Pack'}],
@@ -548,7 +561,7 @@ const MOCK_PRODUCTS = [
     title: 'Zakitos 24-Pack',
     handle: '24-pack',
     tags: ['snacks', 'bulk'],
-    availableForSale: true,
+    availableForSale: false,
     priceRange: {
       minVariantPrice: {amount: '155.00', currencyCode: 'USD'},
       maxVariantPrice: {amount: '155.00', currencyCode: 'USD'},
@@ -564,7 +577,7 @@ const MOCK_PRODUCTS = [
         {
           id: 'gid://shopify/ProductVariant/3',
           title: '24-Pack',
-          availableForSale: true,
+          availableForSale: false,
           price: {amount: '155.00', currencyCode: 'USD'},
           compareAtPrice: {amount: '216.00', currencyCode: 'USD'},
           selectedOptions: [{name: 'Pack Size', value: '24-Pack'}],

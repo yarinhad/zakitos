@@ -35,7 +35,17 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     variables: {productId: product.id, count: 4},
   });
 
-  return json({product, related: related.productRecommendations});
+  // All products are currently out of stock
+  const productOutOfStock = {
+    ...product,
+    availableForSale: false,
+    variants: {
+      ...product.variants,
+      nodes: product.variants.nodes.map((v: any) => ({...v, availableForSale: false})),
+    },
+  };
+
+  return json({product: productOutOfStock, related: related.productRecommendations});
 }
 
 export function meta({data}: {data: any}) {

@@ -169,33 +169,33 @@ import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 const ALL_MOCK_PRODUCTS = [
   {
     id: '1', title: 'Zakitos 1-Pack', handle: '1-pack',
-    tags: ['snacks', 'bestseller'], availableForSale: true,
+    tags: ['snacks', 'bestseller'], availableForSale: false,
     priceRange: {
       minVariantPrice: {amount: '9.00', currencyCode: 'USD' as CurrencyCode},
       maxVariantPrice: {amount: '9.00', currencyCode: 'USD' as CurrencyCode},
     },
     images: {nodes: [{id: '1', url: '/zakitos-1-pack-package.png', altText: 'Zakitos 1-Pack', width: 800, height: 800}]},
-    variants: {nodes: [{id: 'v1', title: '1-Pack', availableForSale: true, price: {amount: '9.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: null, selectedOptions: [{name: 'Pack Size', value: '1-Pack'}]}]},
+    variants: {nodes: [{id: 'v1', title: '1-Pack', availableForSale: false, price: {amount: '9.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: null, selectedOptions: [{name: 'Pack Size', value: '1-Pack'}]}]},
   },
   {
     id: '2', title: 'Zakitos 5-Pack', handle: '5-pack',
-    tags: ['snacks', 'bestseller'], availableForSale: true,
+    tags: ['snacks', 'bestseller'], availableForSale: false,
     priceRange: {
       minVariantPrice: {amount: '38.00', currencyCode: 'USD' as CurrencyCode},
       maxVariantPrice: {amount: '38.00', currencyCode: 'USD' as CurrencyCode},
     },
     images: {nodes: [{id: '2', url: '/zakitos-5-pack-package.png', altText: 'Zakitos 5-Pack', width: 800, height: 800}]},
-    variants: {nodes: [{id: 'v2', title: '5-Pack', availableForSale: true, price: {amount: '38.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '45.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Pack Size', value: '5-Pack'}]}]},
+    variants: {nodes: [{id: 'v2', title: '5-Pack', availableForSale: false, price: {amount: '38.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '45.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Pack Size', value: '5-Pack'}]}]},
   },
   {
     id: '3', title: 'Zakitos 24-Pack', handle: '24-pack',
-    tags: ['snacks', 'bulk'], availableForSale: true,
+    tags: ['snacks', 'bulk'], availableForSale: false,
     priceRange: {
       minVariantPrice: {amount: '155.00', currencyCode: 'USD' as CurrencyCode},
       maxVariantPrice: {amount: '155.00', currencyCode: 'USD' as CurrencyCode},
     },
     images: {nodes: [{id: '3', url: '/zakitos-24-pack-package.png', altText: 'Zakitos 24-Pack', width: 800, height: 800}]},
-    variants: {nodes: [{id: 'v3', title: '24-Pack', availableForSale: true, price: {amount: '155.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '216.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Pack Size', value: '24-Pack'}]}]},
+    variants: {nodes: [{id: 'v3', title: '24-Pack', availableForSale: false, price: {amount: '155.00', currencyCode: 'USD' as CurrencyCode}, compareAtPrice: {amount: '216.00', currencyCode: 'USD' as CurrencyCode}, selectedOptions: [{name: 'Pack Size', value: '24-Pack'}]}]},
   },
 ];
 
