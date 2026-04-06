@@ -6,3 +6,5 @@ dist
 .shopify
 public/build
 .wrangler
+._*
+.claude/
