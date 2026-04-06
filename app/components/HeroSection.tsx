@@ -53,93 +53,76 @@ export function HeroSection({
       <EmberParticles />
 
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
-        <div className="max-w-2xl">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 flex flex-col justify-between min-h-[80vh]">
+        <div className="max-w-3xl">
           {/* Pre-headline */}
           <div
-            className={`flex items-center gap-3 mb-6 transition-all duration-700 ${
+            className={`flex items-center gap-3 mb-8 transition-all duration-700 ${
               loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
             style={{transitionDelay: '100ms'}}
           >
             <div className="h-px w-8 bg-zakitos-red" />
             <span className="font-mono text-zakitos-red text-xs tracking-widest uppercase">
-              Premium Artisanal Chili Snacks
+              Whole Dried Chili Snacks
             </span>
           </div>
 
-          {/* Main headline */}
+          {/* Main headline — 2 lines, wide */}
           <h1
-            className={`font-display text-7xl md:text-8xl lg:text-9xl text-zakitos-cream leading-none tracking-wide transition-all duration-700 ${
+            className={`font-display leading-none tracking-wide transition-all duration-700 ${
               loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
             }`}
-            style={{transitionDelay: '200ms'}}
+            style={{transitionDelay: '200ms', fontSize: 'clamp(72px, 11vw, 148px)'}}
           >
-            REAL
-            <br />
-            <span className="text-gradient-fire">HEAT.</span>
-            <br />
-            REAL
-            <br />
-            <span
-              className="text-zakitos-cream"
-              style={{
-                WebkitTextStroke: '2px rgba(245, 235, 217, 0.3)',
-                color: 'transparent',
-              }}
-            >
-              CHILI.
-            </span>
+            <span className="text-zakitos-cream block">BORN FROM</span>
+            <span className="text-gradient-fire block">THE HEAT.</span>
           </h1>
 
-          {/* Sub-copy */}
-          <p
-            className={`text-zakitos-warm text-lg md:text-xl max-w-sm mt-6 leading-relaxed transition-all duration-700 ${
-              loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-            style={{transitionDelay: '400ms'}}
-          >
-            Whole dried chili strips. No artificial anything.
-            Just unapologetically bold flavor, built for the fearless.
-          </p>
-
-          {/* CTAs */}
+          {/* Sub-copy + CTAs row */}
           <div
-            className={`flex flex-wrap gap-3 mt-8 transition-all duration-700 ${
+            className={`flex flex-col sm:flex-row sm:items-end gap-6 mt-8 transition-all duration-700 ${
               loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
-            style={{transitionDelay: '550ms'}}
+            style={{transitionDelay: '380ms'}}
           >
-            <Link to="/collections/all" className="btn-fire text-base px-8 py-4" prefetch="intent">
-              Shop Now 🌶
-            </Link>
-            <Link to="/about" className="btn-ghost text-base px-8 py-4" prefetch="intent">
-              Our Story
-            </Link>
-          </div>
+            <p className="text-zakitos-warm text-base md:text-lg max-w-xs leading-relaxed flex-shrink-0">
+              No artificial anything —<br />
+              just bold, whole chili flavor<br />
+              built for the fearless.
+            </p>
 
-          {/* Social proof strip */}
-          <div
-            className={`flex items-center gap-6 mt-10 transition-all duration-700 ${
-              loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
-            style={{transitionDelay: '700ms'}}
-          >
-            <div className="flex flex-col">
-              <span className="font-display text-2xl text-zakitos-red">4.9★</span>
-              <span className="text-zakitos-muted text-xs font-mono">2,400+ reviews</span>
-            </div>
-            <div className="w-px h-8 bg-zakitos-border" />
-            <div className="flex flex-col">
-              <span className="font-display text-2xl text-zakitos-cream">5</span>
-              <span className="text-zakitos-muted text-xs font-mono">heat levels</span>
-            </div>
-            <div className="w-px h-8 bg-zakitos-border" />
-            <div className="flex flex-col">
-              <span className="font-display text-2xl text-zakitos-cream">Real</span>
-              <span className="text-zakitos-muted text-xs font-mono">whole chilies</span>
+            <div className="flex flex-wrap gap-3">
+              <Link to="/collections/all" className="btn-fire text-base px-8 py-4" prefetch="intent">
+                Shop Now
+              </Link>
+              <Link to="/about" className="btn-ghost text-base px-8 py-4" prefetch="intent">
+                Our Story
+              </Link>
             </div>
           </div>
+        </div>
+
+        {/* Bottom strip */}
+        <div
+          className={`flex items-center gap-8 mt-16 transition-all duration-700 ${
+            loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}
+          style={{transitionDelay: '560ms'}}
+        >
+          {[
+            {value: '4.9/5', label: '2,400+ reviews'},
+            {value: '5', label: 'heat levels'},
+            {value: '0', label: 'artificial additives'},
+          ].map((stat, i) => (
+            <div key={i} className="flex items-center gap-8">
+              {i > 0 && <div className="w-px h-8 bg-zakitos-border" />}
+              <div className="flex flex-col">
+                <span className="font-display text-xl text-zakitos-cream">{stat.value}</span>
+                <span className="text-zakitos-muted text-xs font-mono">{stat.label}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 

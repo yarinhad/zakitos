@@ -100,7 +100,7 @@ export default function CartPage() {
                   <strong className="text-zakitos-gold font-mono">
                     ${remaining.toFixed(2)}
                   </strong>{' '}
-                  more for free shipping 🚚
+                  more for free shipping
                 </p>
                 <div className="shipping-progress">
                   <div
@@ -112,7 +112,7 @@ export default function CartPage() {
             ) : (
               <div className="bg-zakitos-card border border-zakitos-border p-4 mb-4 text-center">
                 <p className="text-zakitos-gold font-display text-base tracking-wide">
-                  🚚 You've unlocked free shipping!
+                  Free shipping unlocked
                 </p>
               </div>
             )}
@@ -297,7 +297,7 @@ function CartSummary({cart}: {cart: any}) {
         href={cart.checkoutUrl}
         className="btn-fire w-full text-center py-4 text-lg"
       >
-        Checkout → Feel the Heat
+        Proceed to Checkout
       </a>
 
       <p className="text-zakitos-muted text-xs text-center mt-3 font-mono">
@@ -310,7 +310,11 @@ function CartSummary({cart}: {cart: any}) {
 function EmptyCart() {
   return (
     <div className="text-center py-20">
-      <div className="text-6xl mb-6">🌶</div>
+      <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-zakitos-dark border border-zakitos-border flex items-center justify-center">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-zakitos-muted">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+      </div>
       <h2 className="font-display text-4xl text-zakitos-cream tracking-wide mb-3">
         YOUR BAG IS COLD
       </h2>
@@ -318,7 +322,7 @@ function EmptyCart() {
         Time to add some heat. Explore our lineup and find your flavor match.
       </p>
       <Link to="/collections/all" className="btn-fire text-base px-8 py-4" prefetch="intent">
-        Shop Now 🌶
+        Shop Now
       </Link>
     </div>
   );

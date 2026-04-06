@@ -88,8 +88,8 @@ export default function AboutPage() {
             </div>
             <div className="relative">
               <img
-                src="/zakitos-In_a_still_life_photography_style_a_black_pouch_b5.png"
-                alt="Zakitos Packaging"
+                src="/lifestyle-chili-closeup.png"
+                alt="Zakitos Chili Closeup"
                 className="w-full max-w-sm mx-auto md:ml-auto"
                 loading="lazy"
               />
@@ -122,39 +122,39 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               {
-                icon: '⚡',
+                svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
                 title: 'Boldness',
                 description: "We don't do mild. In product, brand, and culture.",
                 color: '#E8170B',
               },
               {
-                icon: '🌱',
+                svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
                 title: 'Authenticity',
                 description: 'Real chilies, real sourcing, real heat — no artificial shortcuts.',
                 color: '#FFB800',
               },
               {
-                icon: '🤝',
+                svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
                 title: 'Community',
                 description: 'Chili lovers are our tribe. We build with them, not just for them.',
                 color: '#FF5500',
               },
               {
-                icon: '🏺',
+                svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
                 title: 'Craftsmanship',
                 description: 'Every bag is a deliberate act of flavor engineering.',
                 color: '#E8170B',
               },
-            ].map(({icon, title, description, color}) => (
+            ].map(({svg, title, description, color}) => (
               <div
                 key={title}
                 className="card-dark p-6 group hover:border-zakitos-red/50"
               >
                 <div
-                  className="text-4xl mb-4 w-14 h-14 rounded-full flex items-center justify-center"
-                  style={{backgroundColor: `${color}18`, border: `2px solid ${color}30`}}
+                  className="mb-4 w-14 h-14 rounded-full flex items-center justify-center"
+                  style={{backgroundColor: `${color}18`, border: `2px solid ${color}30`, color}}
                 >
-                  {icon}
+                  {svg}
                 </div>
                 <h3 className="font-display text-2xl text-zakitos-cream tracking-wide mb-2">
                   {title.toUpperCase()}
@@ -240,7 +240,7 @@ export default function AboutPage() {
               </div>
 
               <Link to="/collections/all" className="btn-fire" prefetch="intent">
-                Explore the Range 🌶
+                Explore the Range
               </Link>
             </div>
           </div>
@@ -253,10 +253,11 @@ export default function AboutPage() {
         style={{background: 'linear-gradient(135deg, #111 0%, #1A1A1A 100%)'}}
       >
         <div
-          className="absolute right-0 bottom-0 text-[18rem] font-display leading-none text-zakitos-red/5 pointer-events-none select-none"
+          className="absolute right-0 bottom-0 font-display leading-none pointer-events-none select-none"
           aria-hidden
+          style={{fontSize: '18rem', color: 'rgba(232,23,11,0.05)'}}
         >
-          🔥
+          Z
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -276,9 +277,9 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
             {[
-              {tier: '🌶 Jalapeño', points: '0–500 pts', perk: 'Free shipping on all orders'},
-              {tier: '🔥 Habanero', points: '500–2K pts', perk: 'Exclusive flavor samples'},
-              {tier: '💀 Reaper', points: '2K+ pts', perk: 'Limited drops & co-creation'},
+              {tier: 'Jalapeño', points: '0–500 pts', perk: 'Free shipping on all orders'},
+              {tier: 'Habanero', points: '500–2K pts', perk: 'Exclusive flavor samples'},
+              {tier: 'Reaper', points: '2K+ pts', perk: 'Limited drops & co-creation'},
             ].map(({tier, points, perk}) => (
               <div key={tier} className="card-dark p-5 text-center">
                 <div className="font-display text-2xl text-zakitos-cream tracking-wide mb-1">
@@ -331,7 +332,9 @@ export default function AboutPage() {
             {/* About MPF */}
             <div className="card-dark p-8">
               <div className="flex items-center gap-3 mb-5">
-                <span className="text-3xl">🌿</span>
+                <div className="w-9 h-9 flex-shrink-0 rounded-lg flex items-center justify-center" style={{backgroundColor: 'rgba(74,222,128,0.12)', border: '1px solid rgba(74,222,128,0.25)'}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M12 12C12 7 8 3 3 3c0 5 4 9 9 9"/><path d="M12 12c0-5 4-9 9-9c0 5-4 9-9 9"/></svg>
+                </div>
                 <h3 className="font-display text-2xl text-zakitos-cream tracking-wide">
                   MAGIC PLANT FARMS
                 </h3>
@@ -360,7 +363,9 @@ export default function AboutPage() {
             {/* Location */}
             <div className="card-dark p-8">
               <div className="flex items-center gap-3 mb-5">
-                <span className="text-3xl">📍</span>
+                <div className="w-9 h-9 flex-shrink-0 rounded-lg flex items-center justify-center" style={{backgroundColor: 'rgba(232,23,11,0.12)', border: '1px solid rgba(232,23,11,0.25)'}}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8170B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z"/></svg>
+                </div>
                 <h3 className="font-display text-2xl text-zakitos-cream tracking-wide">
                   GLOBAL REACH
                 </h3>
@@ -368,10 +373,10 @@ export default function AboutPage() {
               <div className="space-y-5 text-zakitos-muted text-sm leading-relaxed">
                 <div className="flex gap-4">
                   <div
-                    className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center text-lg"
-                    style={{backgroundColor: 'rgba(232,23,11,0.12)', border: '1px solid rgba(232,23,11,0.25)'}}
+                    className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center font-mono text-xs font-bold"
+                    style={{backgroundColor: 'rgba(232,23,11,0.12)', border: '1px solid rgba(232,23,11,0.25)', color: '#E8170B'}}
                   >
-                    🇺🇸
+                    US
                   </div>
                   <div>
                     <p className="font-display text-sm text-zakitos-cream tracking-wide mb-1">
@@ -390,10 +395,10 @@ export default function AboutPage() {
 
                 <div className="flex gap-4">
                   <div
-                    className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center text-lg"
-                    style={{backgroundColor: 'rgba(255,184,0,0.12)', border: '1px solid rgba(255,184,0,0.25)'}}
+                    className="w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center font-mono text-xs font-bold"
+                    style={{backgroundColor: 'rgba(255,184,0,0.12)', border: '1px solid rgba(255,184,0,0.25)', color: '#FFB800'}}
                   >
-                    🌍
+                    WW
                   </div>
                   <div>
                     <p className="font-display text-sm text-zakitos-cream tracking-wide mb-1">
@@ -414,13 +419,13 @@ export default function AboutPage() {
           {/* Stat strip */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              {stat: '4', label: 'Continents', icon: '🌐'},
-              {stat: '100%', label: 'Capsicum Specialists', icon: '🌶'},
-              {stat: 'Year-Round', label: 'Supply Guarantee', icon: '📦'},
-              {stat: 'Direct', label: 'Farm-to-Bag Sourcing', icon: '🤝'},
-            ].map(({stat, label, icon}) => (
+              {stat: '4', label: 'Continents', svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>},
+              {stat: '100%', label: 'Capsicum Specialists', svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>},
+              {stat: 'Year-Round', label: 'Supply Guarantee', svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>},
+              {stat: 'Direct', label: 'Farm-to-Bag Sourcing', svg: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22V12"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/><path d="M12 12C12 7 8 3 3 3c0 5 4 9 9 9"/><path d="M12 12c0-5 4-9 9-9c0 5-4 9-9 9"/></svg>},
+            ].map(({stat, label, svg}) => (
               <div key={label} className="bg-zakitos-card border border-zakitos-border p-5 text-center">
-                <div className="text-2xl mb-2">{icon}</div>
+                <div className="flex justify-center mb-2 text-zakitos-red">{svg}</div>
                 <div className="font-display text-2xl text-zakitos-red mb-1">{stat}</div>
                 <div className="font-mono text-xs text-zakitos-muted tracking-wide uppercase">{label}</div>
               </div>
@@ -440,7 +445,7 @@ export default function AboutPage() {
             '/ecomm-hero-shot-all packages.png',
             '/ecomm hero-1-package.png',
             '/ecomm-detail-lifestyle-closeup.png',
-            '/zakitos-In_a_still_life_photography_style_a_black_pouch_b5.png',
+            '/lifestyle-friends-snacking.png',
           ].map((src, i) => (
             <div key={i} className="aspect-square overflow-hidden">
               <img

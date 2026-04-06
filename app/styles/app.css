@@ -10,13 +10,13 @@
   --color-ember:   #FF5500;
   --color-orange:  #FF6B00;
   --color-gold:    #FFB800;
-  --color-black:   #0A0A0A;
-  --color-dark:    #111111;
-  --color-card:    #1A1A1A;
-  --color-border:  #2A2A2A;
-  --color-cream:   #F5EBD9;
-  --color-warm:    #E8D5B5;
-  --color-muted:   rgba(245, 235, 217, 0.45);
+  --color-black:   #FAFAF8;
+  --color-dark:    #F2EBE0;
+  --color-card:    #FFFFFF;
+  --color-border:  #E3D9CC;
+  --color-cream:   #1A1410;
+  --color-warm:    #3D3530;
+  --color-muted:   rgba(26, 20, 16, 0.45);
 
   --font-display:  'Anton', Impact, sans-serif;
   --font-body:     'DM Sans', system-ui, sans-serif;
@@ -45,6 +45,7 @@ body {
   color: var(--color-cream);
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ─── Typography ──────────────────────────────────────────────────── */
@@ -124,6 +125,7 @@ body {
   text-transform: uppercase;
   border: none;
   cursor: pointer;
+  border-radius: 8px;
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
@@ -157,6 +159,7 @@ body {
   text-transform: uppercase;
   border: 2px solid var(--color-fire);
   cursor: pointer;
+  border-radius: 8px;
   transition: all var(--transition-base);
 }
 .btn-outline-fire:hover {
@@ -180,6 +183,7 @@ body {
   text-transform: uppercase;
   border: none;
   cursor: pointer;
+  border-radius: 8px;
   transition: all var(--transition-base);
 }
 .btn-cream:hover {
@@ -200,13 +204,13 @@ body {
   font-size: 1.125rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  border: 2px solid rgba(245, 235, 217, 0.3);
+  border: 2px solid var(--color-border);
   cursor: pointer;
   transition: all var(--transition-base);
 }
 .btn-ghost:hover {
   border-color: var(--color-cream);
-  background: rgba(245, 235, 217, 0.05);
+  background: var(--color-dark);
   transform: translateY(-2px);
 }
 
@@ -214,11 +218,14 @@ body {
 .card-dark {
   background: var(--color-card);
   border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   transition: all var(--transition-base);
 }
 .card-dark:hover {
-  border-color: rgba(232, 23, 11, 0.4);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(232, 23, 11, 0.2);
+  border-color: rgba(232, 23, 11, 0.35);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(232, 23, 11, 0.15);
   transform: translateY(-4px);
 }
 
@@ -235,13 +242,11 @@ body {
   border-color: transparent;
 }
 .heat-pip.active::after {
-  content: '🌶';
-  font-size: 0.875rem;
+  content: '';
   position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  inset: 2px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-fire), var(--color-ember));
 }
 
 /* ─── Marquee ─────────────────────────────────────────────────────── */
@@ -286,13 +291,15 @@ body {
 /* ─── Sticky ATC ──────────────────────────────────────────────────── */
 .sticky-atc {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
   z-index: 50;
   background: var(--color-dark);
-  border-top: 1px solid var(--color-border);
-  transform: translateY(100%);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  transform: translateY(120%);
   transition: transform var(--transition-base);
 }
 .sticky-atc.visible {
@@ -310,7 +317,7 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-dark);
+  background: var(--color-black);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
@@ -343,7 +350,7 @@ body {
 
 /* ─── Loading states ─────────────────────────────────────────────── */
 .skeleton {
-  background: linear-gradient(90deg, var(--color-card) 25%, var(--color-border) 50%, var(--color-card) 75%);
+  background: linear-gradient(90deg, var(--color-dark) 25%, var(--color-border) 50%, var(--color-dark) 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s infinite;
 }
@@ -357,39 +364,42 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.25rem 0.625rem;
+  padding: 0.25rem 0.75rem;
   background: var(--color-fire);
   color: white;
   font-family: var(--font-display);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  border-radius: 999px;
 }
 
 .badge-gold {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.25rem 0.625rem;
+  padding: 0.25rem 0.75rem;
   background: var(--color-gold);
   color: var(--color-black);
   font-family: var(--font-display);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  border-radius: 999px;
 }
 
 .badge-dark {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.25rem 0.625rem;
+  padding: 0.25rem 0.75rem;
   background: var(--color-card);
   color: var(--color-cream);
   border: 1px solid var(--color-border);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   letter-spacing: 0.04em;
+  border-radius: 999px;
 }
 
 /* ─── UGC / Reactions ────────────────────────────────────────────── */
@@ -398,6 +408,7 @@ body {
   overflow: hidden;
   background: var(--color-card);
   border: 1px solid var(--color-border);
+  border-radius: 16px;
   transition: all var(--transition-base);
 }
 .ugc-card:hover {
@@ -421,13 +432,14 @@ body {
   border: 1px solid var(--color-border);
   color: var(--color-cream);
   padding: 0.75rem 1rem;
-  transition: border-color var(--transition-fast);
+  border-radius: 8px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
   width: 100%;
 }
 .input-fire:focus {
   border-color: var(--color-fire);
-  box-shadow: 0 0 0 2px rgba(232, 23, 11, 0.2);
+  box-shadow: 0 0 0 3px rgba(232, 23, 11, 0.12);
 }
 .input-fire::placeholder {
   color: var(--color-muted);
@@ -466,6 +478,8 @@ body {
   display: flex;
   gap: 0;
   border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
 }
 .sub-toggle-btn {
   flex: 1;
@@ -577,6 +591,7 @@ body {
   background: transparent;
   color: var(--color-muted);
   border: 1px solid var(--color-border);
+  border-radius: 999px;
   cursor: pointer;
   transition: all var(--transition-fast);
 }

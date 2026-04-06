@@ -1,19 +1,16 @@
-import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {json, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   useLoaderData,
   Link,
   useFetcher,
-  useSearchParams,
 } from '@remix-run/react';
 import {Money, VariantSelector, getSelectedProductOptions} from '@shopify/hydrogen';
 import {SafeImage} from '~/components/SafeImage';
-import type {SelectedOption} from '@shopify/hydrogen/storefront-api-types';
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
 import {HeatMeter} from '~/components/HeatMeter';
 import {FlavorBadge} from '~/components/FlavorBadge';
 import {StickyAddToCart} from '~/components/StickyAddToCart';
-import {BundleUpsell} from '~/components/BundleSelector';
-import {PRODUCT_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
+import {PRODUCT_FRAGMENT} from '~/lib/fragments';
 import {getHeatLevel, getMetafield, getShuRange, truncate} from '~/lib/utils';
 
 export async function loader({params, request, context}: LoaderFunctionArgs) {
@@ -22,6 +19,11 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
 
   if (!handle) throw new Response('Not Found', {status: 404});
 
+  // All old pack handles redirect to the unified product page
+  if (['1-pack', '5-pack', '24-pack', '20-pack'].includes(handle)) {
+    return redirect('/products/zakitos', {status: 301});
+  }
+
   const selectedOptions = getSelectedProductOptions(request);
 
   const {product} = await storefront.query(PRODUCT_QUERY, {
@@ -29,11 +31,6 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   });
 
   if (!product) throw new Response('Product Not Found', {status: 404});
-
-  // Fetch related products
-  const related = await storefront.query(RELATED_PRODUCTS_QUERY, {
-    variables: {productId: product.id, count: 4},
-  });
 
   // All products are currently out of stock
   const productOutOfStock = {
@@ -45,7 +42,7 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     },
   };
 
-  return json({product: productOutOfStock, related: related.productRecommendations});
+  return json({product: productOutOfStock});
 }
 
 export function meta({data}: {data: any}) {
@@ -59,7 +56,7 @@ export function meta({data}: {data: any}) {
 }
 
 export default function ProductPage() {
-  const {product, related} = useLoaderData<typeof loader>();
+  const {product} = useLoaderData<typeof loader>();
   const [selectedVariant, setSelectedVariant] = useState(
     product.variants.nodes[0] ?? null,
   );
@@ -310,7 +307,7 @@ export default function ProductPage() {
                     : addedToCart
                     ? '✓ Added to Cart'
                     : selectedVariant?.availableForSale
-                    ? 'Add to Cart 🌶'
+                    ? 'Add to Cart'
                     : 'Sold Out'}
                 </button>
               </fetcher.Form>
@@ -319,12 +316,12 @@ export default function ProductPage() {
             {/* Trust signals */}
             <div className="grid grid-cols-3 gap-3 pt-4 border-t border-zakitos-border text-center">
               {[
-                {icon: '🚚', text: 'Free over $35'},
-                {icon: '🔄', text: '30-day returns'},
-                {icon: '🌿', text: 'Real ingredients'},
+                {icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>, text: 'Free over $35'},
+                {icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>, text: '30-day returns'},
+                {icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>, text: 'Real ingredients'},
               ].map(({icon, text}) => (
                 <div key={text} className="flex flex-col items-center gap-1">
-                  <span className="text-xl">{icon}</span>
+                  <span className="text-zakitos-red">{icon}</span>
                   <span className="text-zakitos-muted text-[11px] font-mono">{text}</span>
                 </div>
               ))}
@@ -339,46 +336,6 @@ export default function ProductPage() {
           origin={origin}
         />
 
-        {/* ── Bundle Upsell ───────────────────────────────────── */}
-        <BundleUpsell currentHandle={product.handle} />
-
-        {/* ── Related Products ────────────────────────────────── */}
-        {related && related.length > 0 && (
-          <section className="mt-16">
-            <h2 className="font-display text-4xl text-zakitos-cream tracking-wide mb-6">
-              YOU MIGHT ALSO LIKE
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {related.slice(0, 4).map((p: any) => (
-                <Link
-                  key={p.id}
-                  to={`/products/${p.handle}`}
-                  prefetch="intent"
-                  className="group card-dark overflow-hidden"
-                >
-                  <div className="aspect-square bg-zakitos-dark p-4 overflow-hidden">
-                    {p.images.nodes[0] && (
-                      <SafeImage
-                        data={p.images.nodes[0]}
-                        loading="lazy"
-                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                        sizes="(min-width: 768px) 25vw, 50vw"
-                      />
-                    )}
-                  </div>
-                  <div className="p-3">
-                    <p className="font-display text-lg text-zakitos-cream tracking-wide">
-                      {p.title}
-                    </p>
-                    <p className="font-mono text-sm text-zakitos-muted mt-1">
-                      <Money data={p.priceRange.minVariantPrice} />
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
 
         {/* ── Reviews placeholder ─────────────────────────────── */}
         <ReviewsSection />
@@ -432,7 +389,7 @@ function ProductDetails({
     },
     {
       id: 'heat',
-      title: '🔥 About This Heat',
+      title: 'About This Heat',
       content: (
         <div className="text-zakitos-muted text-sm leading-relaxed space-y-2">
           <p>
@@ -446,7 +403,7 @@ function ProductDetails({
     },
     {
       id: 'shipping',
-      title: '📦 Shipping & Returns',
+      title: 'Shipping & Returns',
       content: (
         <div className="text-zakitos-muted text-sm space-y-2">
           <p>Free standard shipping on orders over $35.</p>
@@ -493,7 +450,7 @@ function ReviewsSection() {
       rating: 5,
       title: 'Best chili snack I\'ve ever had',
       body: 'The heat is REAL. Not that artificial powder garbage. Whole dried chilies that actually taste like chilies. Reordered 3 times.',
-      heat: '💀 Level 5 eater',
+      heat: 'Level 5',
       verified: true,
     },
     {
@@ -501,7 +458,7 @@ function ReviewsSection() {
       rating: 5,
       title: 'Obsessed with the Garlic Chili',
       body: 'Perfect balance of heat and flavor. The garlic notes come through beautifully. Already got 2 friends hooked.',
-      heat: '🔥 Level 3 eater',
+      heat: 'Level 3',
       verified: true,
     },
     {
@@ -509,7 +466,7 @@ function ReviewsSection() {
       rating: 4,
       title: 'Great snack, impressive packaging',
       body: 'The black foil bag is gorgeous. Perfect for gifting. Heat is real but approachable even for non-spicy heads.',
-      heat: '🌶 Level 2 eater',
+      heat: 'Level 2',
       verified: true,
     },
   ];
@@ -520,9 +477,11 @@ function ReviewsSection() {
         <div>
           <h2 className="font-display text-4xl text-zakitos-cream tracking-wide">REVIEWS</h2>
           <div className="flex items-center gap-2 mt-1">
-            <div className="flex">
+            <div className="flex gap-0.5">
               {Array.from({length: 5}).map((_, i) => (
-                <span key={i} className="text-zakitos-gold text-lg">★</span>
+                <svg key={i} width="14" height="14" viewBox="0 0 24 24" fill="#FFB800" className="flex-shrink-0">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
               ))}
             </div>
             <span className="font-mono text-sm text-zakitos-muted">4.9 · 2,400+ reviews</span>
@@ -539,13 +498,15 @@ function ReviewsSection() {
         {mockReviews.map((review, i) => (
           <div key={i} className="card-dark p-5">
             <div className="flex items-start justify-between mb-3">
-              <div className="flex">
+              <div className="flex gap-0.5">
                 {Array.from({length: review.rating}).map((_, j) => (
-                  <span key={j} className="text-zakitos-gold text-sm">★</span>
+                  <svg key={j} width="12" height="12" viewBox="0 0 24 24" fill="#FFB800">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                  </svg>
                 ))}
               </div>
               {review.verified && (
-                <span className="text-zakitos-muted text-[10px] font-mono">✓ Verified</span>
+                <span className="text-zakitos-ember text-[10px] font-mono tracking-wide">Verified</span>
               )}
             </div>
             <p className="font-display text-base text-zakitos-cream tracking-wide mb-2">
@@ -602,27 +563,3 @@ const PRODUCT_QUERY = `#graphql
   ${PRODUCT_FRAGMENT}
 `;
 
-const RELATED_PRODUCTS_QUERY = `#graphql
-  query RelatedProducts($productId: ID!, $count: Int) {
-    productRecommendations(productId: $productId) {
-      id
-      title
-      handle
-      priceRange {
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      images(first: 1) {
-        nodes {
-          id
-          url
-          altText
-          width
-          height
-        }
-      }
-    }
-  }
-`;

@@ -40,9 +40,9 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <img
-              src="/zakitos-logo.png"
+              src="/zakitos-transparent-logo.png"
               alt="Zakitos"
-              className="h-8 w-auto mb-4"
+              className="h-8 w-auto mb-4 brightness-0"
             />
             <p className="text-zakitos-muted text-sm leading-relaxed max-w-xs">
               Premium artisanal dried chili snacks. Real heat. Real chili. No shortcuts.
@@ -148,9 +148,13 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-2">
             <span className="text-zakitos-muted text-xs font-mono">HEAT LEVEL:</span>
-            <div className="flex gap-1">
+            <div className="flex gap-1 items-center">
               {[1,2,3,4,5].map((i) => (
-                <span key={i} className="text-xs">{i <= 4 ? '🌶' : '💀'}</span>
+                <span
+                  key={i}
+                  className="w-2 h-2 rounded-full inline-block"
+                  style={{background: `rgba(232,23,11,${0.3 + i * 0.14})`}}
+                />
               ))}
             </div>
           </div>

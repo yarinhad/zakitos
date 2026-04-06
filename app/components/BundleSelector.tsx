@@ -14,7 +14,6 @@ interface Bundle {
   compareAtPrice?: {amount: string; currencyCode: CurrencyCode};
   handle: string;
   heatLevel: number;
-  icon: string;
   popular?: boolean;
 }
 
@@ -28,9 +27,8 @@ const BUNDLES: Bundle[] = [
     items: ['1 × Zakitos chili snack bag', 'Perfect for first-timers'],
     price: {amount: '9.00', currencyCode: 'USD' as CurrencyCode},
     compareAtPrice: undefined,
-    handle: '1-pack',
+    handle: 'zakitos',
     heatLevel: 3,
-    icon: '🌶',
   },
   {
     id: '5-pack',
@@ -41,22 +39,20 @@ const BUNDLES: Bundle[] = [
     items: ['5 × Zakitos chili snack bags', 'Save vs. buying singles', 'Free shipping eligible'],
     price: {amount: '38.00', currencyCode: 'USD' as CurrencyCode},
     compareAtPrice: {amount: '45.00', currencyCode: 'USD' as CurrencyCode},
-    handle: '5-pack',
+    handle: 'zakitos',
     heatLevel: 3,
-    icon: '🔥',
     popular: true,
   },
   {
-    id: '24-pack',
-    title: '24-Pack',
+    id: '20-pack',
+    title: '20-Pack',
     description: 'Go all in. Bulk pricing, over a month of daily heat.',
     savings: 'Save 28%',
-    items: ['24 × Zakitos chili snack bags', 'Best price per bag', 'Free shipping included'],
+    items: ['20 × Zakitos chili snack bags', 'Best price per bag', 'Free shipping included'],
     price: {amount: '155.00', currencyCode: 'USD' as CurrencyCode},
-    compareAtPrice: {amount: '216.00', currencyCode: 'USD' as CurrencyCode},
-    handle: '24-pack',
+    compareAtPrice: {amount: '180.00', currencyCode: 'USD' as CurrencyCode},
+    handle: 'zakitos',
     heatLevel: 3,
-    icon: '💀',
   },
 ];
 
@@ -114,15 +110,14 @@ function BundleCard({bundle}: {bundle: Bundle}) {
       {bundle.popular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
           <span className="badge-fire text-xs px-3 py-1 whitespace-nowrap">
-            ⚡ Most Popular
+            Most Popular
           </span>
         </div>
       )}
 
-      {/* Icon & title */}
+      {/* Title */}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <div className="text-3xl mb-2">{bundle.icon}</div>
           <h3 className="font-display text-2xl text-zakitos-cream tracking-wide leading-tight">
             {bundle.title}
           </h3>
@@ -180,9 +175,9 @@ export function BundleUpsell({currentHandle}: {currentHandle: string}) {
   const relatedBundles = BUNDLES.filter((b) => b.handle !== currentHandle).slice(0, 2);
 
   return (
-    <div className="mt-8 p-5 bg-zakitos-card border border-zakitos-border">
+    <div className="mt-8 p-5 bg-zakitos-card border border-zakitos-border rounded-2xl">
       <p className="font-display text-sm tracking-widest uppercase text-zakitos-orange mb-4">
-        🔥 More Pack Options
+        More Pack Options
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {relatedBundles.map((bundle) => (
@@ -190,9 +185,8 @@ export function BundleUpsell({currentHandle}: {currentHandle: string}) {
             key={bundle.id}
             to={`/products/${bundle.handle}`}
             prefetch="intent"
-            className="flex items-center gap-3 p-3 bg-zakitos-dark border border-zakitos-border hover:border-zakitos-red transition-colors"
+            className="flex items-center gap-3 p-3 bg-zakitos-dark border border-zakitos-border rounded-xl hover:border-zakitos-red transition-colors"
           >
-            <span className="text-2xl">{bundle.icon}</span>
             <div className="flex-1 min-w-0">
               <p className="font-display text-sm text-zakitos-cream truncate">{bundle.title}</p>
               <p className="font-mono text-xs text-zakitos-muted">

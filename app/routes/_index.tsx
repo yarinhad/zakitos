@@ -1,12 +1,9 @@
 import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
-import {Money} from '@shopify/hydrogen';
-import {SafeImage} from '~/components/SafeImage';
 import {HeroSection} from '~/components/HeroSection';
 import {ProductCard, ProductCardSkeleton} from '~/components/ProductCard';
 import {UGCCarousel} from '~/components/UGCCarousel';
-import {BundleSelector} from '~/components/BundleSelector';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/fragments';
 
 export function meta() {
@@ -59,66 +56,34 @@ export default function Homepage() {
       {/* ── Marquee Band ─────────────────────────────────────── */}
       <MarqueeBand />
 
-      {/* ── Featured Products ────────────────────────────────── */}
+      {/* ── Featured Product ─────────────────────────────────── */}
       <section className="py-20 bg-zakitos-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-12">
-            <div>
-              <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
-                The Lineup
-              </p>
-              <h2 className="font-display text-5xl md:text-6xl text-zakitos-cream tracking-wide leading-none">
-                CHOOSE YOUR
-                <br />
-                <span className="text-gradient-fire">HEAT LEVEL</span>
-              </h2>
-            </div>
-            <Link
-              to="/collections/all"
-              className="hidden md:flex items-center gap-2 text-zakitos-muted hover:text-zakitos-cream transition-colors font-mono text-sm"
-              prefetch="intent"
-            >
-              View All
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
-                <polyline points="9 18 15 12 9 6"/>
-              </svg>
-            </Link>
+          <div className="text-center mb-12">
+            <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
+              The Product
+            </p>
+            <h2 className="font-display text-5xl md:text-6xl text-zakitos-cream tracking-wide leading-none">
+              ONE SNACK.
+              <br />
+              <span className="text-gradient-fire">ENDLESS HEAT.</span>
+            </h2>
           </div>
 
-          <Suspense
-            fallback={
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {Array.from({length: 4}).map((_, i) => (
-                  <ProductCardSkeleton key={i} />
-                ))}
-              </div>
-            }
-          >
+          <Suspense fallback={<ProductCardSkeleton />}>
             <Await resolve={featuredProducts}>
-              {({products}) => (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {(products?.nodes ?? MOCK_PRODUCTS).map((product: any, i: number) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      loading={i < 2 ? 'eager' : 'lazy'}
-                    />
-                  ))}
-                </div>
-              )}
+              {({products}) => {
+                const product = (products?.nodes ?? MOCK_PRODUCTS)[0];
+                return (
+                  <div className="max-w-sm mx-auto">
+                    <ProductCard product={product} loading="eager" />
+                  </div>
+                );
+              }}
             </Await>
           </Suspense>
-
-          <div className="text-center mt-8 md:hidden">
-            <Link to="/collections/all" className="btn-outline-fire" prefetch="intent">
-              Shop All Products
-            </Link>
-          </div>
         </div>
       </section>
-
-      {/* ── Heat Scale Explorer ───────────────────────────────── */}
-      <HeatScaleSection />
 
       {/* ── Brand Story Teaser ────────────────────────────────── */}
       <BrandStoryTeaser />
@@ -131,9 +96,6 @@ export default function Homepage() {
 
       {/* ── Cinematic Video 2 ────────────────────────────────── */}
       <CinematicVideoSection src="/hero-cinematic2.mp4" headline="NO" highlight="SHORTCUTS." tag="The Standard" />
-
-      {/* ── Bundles ──────────────────────────────────────────── */}
-      <BundleSelector />
 
       {/* ── Trust Strip ──────────────────────────────────────── */}
       <TrustStrip />
@@ -175,124 +137,32 @@ function MarqueeBand() {
   );
 }
 
-/* ─── Pack Options ────────────────────────────────────────────────── */
-const PACK_OPTIONS = [
-  {
-    handle: '1-pack',
-    title: '1-Pack',
-    tagline: 'Try it out.',
-    description: 'One bag of bold dried chili strips. The first hit is free.',
-    emoji: '🌶',
-    color: '#FFB800',
-    price: '$9',
-    savings: null,
-    badge: null,
-    image: '/zakitos-1-pack-package.png',
-  },
-  {
-    handle: '5-pack',
-    title: '5-Pack',
-    tagline: 'Stock up.',
-    description: 'Five bags. Enough to share — or not. Save 15% vs buying singles.',
-    emoji: '🔥',
-    color: '#FF5500',
-    price: '$38',
-    savings: 'Save 15%',
-    badge: 'Most Popular',
-    image: '/zakitos-5-pack-package.png',
-  },
-  {
-    handle: '24-pack',
-    title: '24-Pack',
-    tagline: 'Go all in.',
-    description: 'The full arsenal. Bulk pricing. Over a month of daily heat.',
-    emoji: '💀',
-    color: '#E8170B',
-    price: '$155',
-    savings: 'Save 28%',
-    badge: 'Best Value',
-    image: '/zakitos-24-pack-package.png',
-  },
-];
-
 function HeatScaleSection() {
   return (
     <section className="py-24 bg-zakitos-black noise-overlay relative overflow-hidden">
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 text-[20rem] font-display text-zakitos-red/5 pointer-events-none select-none leading-none">
-        🌶
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 font-display text-[20rem] text-zakitos-red/5 pointer-events-none select-none leading-none tracking-tight">
+        X
       </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16">
-          <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-2">
-            Choose Your Pack
-          </p>
-          <h2 className="font-display text-5xl md:text-7xl text-zakitos-cream tracking-wide leading-none">
-            HOW MUCH
-            <br />
-            <span className="text-gradient-fire">HEAT DO YOU NEED?</span>
-          </h2>
-          <p className="text-zakitos-muted mt-4 max-w-md mx-auto">
-            One bag to start, five to commit, twenty-four to go full Zakitos.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {PACK_OPTIONS.map((pack) => (
-            <Link
-              key={pack.handle}
-              to={`/products/${pack.handle}`}
-              prefetch="intent"
-              className="group card-dark p-6 text-left hover:border-zakitos-red/60 transition-all duration-300 relative"
-            >
-              {pack.badge && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="badge-fire text-xs px-3 py-1 whitespace-nowrap">
-                    {pack.badge}
-                  </span>
-                </div>
-              )}
-
-              <div className="aspect-square bg-zakitos-dark mb-5 overflow-hidden flex items-center justify-center">
-                <img
-                  src={pack.image}
-                  alt={pack.title}
-                  className="w-3/4 h-3/4 object-contain transition-transform duration-500 group-hover:scale-110"
-                  loading="lazy"
-                />
-              </div>
-
-              <div className="flex items-start justify-between mb-3">
-                <div>
-                  <h3 className="font-display text-3xl text-zakitos-cream tracking-wide">
-                    {pack.title}
-                  </h3>
-                  <p className="text-zakitos-warm text-sm mt-0.5 italic">{pack.tagline}</p>
-                </div>
-                <span className="text-3xl">{pack.emoji}</span>
-              </div>
-
-              <p className="text-zakitos-muted text-sm leading-relaxed mb-4">
-                {pack.description}
-              </p>
-
-              <div className="flex items-center justify-between mt-4">
-                <div>
-                  <span className="font-mono text-xl text-zakitos-cream">{pack.price}</span>
-                  {pack.savings && (
-                    <span className="ml-2 text-xs font-mono text-zakitos-ember">{pack.savings}</span>
-                  )}
-                </div>
-                <span
-                  className="font-display text-sm tracking-wide group-hover:underline"
-                  style={{color: pack.color}}
-                >
-                  Shop Now →
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+        <p className="font-mono text-zakitos-ember text-xs tracking-widest uppercase mb-4">
+          One Product. Every Size.
+        </p>
+        <h2 className="font-display text-5xl md:text-7xl text-zakitos-cream tracking-wide leading-none mb-6">
+          CRUNCH CHAOS
+          <br />
+          <span className="text-gradient-fire">YOUR WAY.</span>
+        </h2>
+        <p className="text-zakitos-muted max-w-md mx-auto mb-10">
+          One bag to try it. Five to commit. Twenty to go full Zakitos.
+          Choose your quantity on the product page.
+        </p>
+        <Link
+          to="/products/zakitos"
+          className="btn-fire text-base px-10 py-4"
+          prefetch="intent"
+        >
+          Shop Crunch Chaos →
+        </Link>
       </div>
     </section>
   );
@@ -323,26 +193,30 @@ function BrandStoryTeaser() {
             <p className="font-mono text-zakitos-red text-xs tracking-widest uppercase mb-4">
               The Story
             </p>
-            <h2 className="font-display text-5xl md:text-6xl text-zakitos-cream tracking-wide leading-none mb-6">
+            <h2 className="font-display text-5xl md:text-6xl text-white tracking-wide leading-none mb-6">
               THE CHILI
               <br />
               <span className="text-gradient-fire">IS THE SNACK.</span>
             </h2>
-            <p className="text-zakitos-muted text-base leading-relaxed mb-8 max-w-sm">
+            <p className="text-white/65 text-base leading-relaxed mb-8 max-w-sm">
               No chips. No powder. No filler. Just whole dried chili strips,
               sourced and seasoned with the boldness you deserve.
               Every bag is a deliberate act of flavor engineering.
             </p>
             <div className="flex flex-col gap-3 mb-8">
               {[
-                {icon: '🌶', text: 'Whole dried chili strips — the real thing'},
-                {icon: '✓', text: 'Clean label — no artificial shortcuts'},
-                {icon: '🌍', text: 'Farm-traced chili sourcing'},
-                {icon: '🔥', text: '5-tier heat scale, built for discovery'},
-              ].map(({icon, text}) => (
+                'Whole dried chili strips — the real thing',
+                'Clean label — no artificial shortcuts',
+                'Farm-traced chili sourcing',
+                '5-tier heat scale, built for discovery',
+              ].map((text) => (
                 <div key={text} className="flex items-center gap-3">
-                  <span className="text-lg w-6 flex-shrink-0">{icon}</span>
-                  <span className="text-zakitos-warm text-sm">{text}</span>
+                  <div className="w-5 h-5 rounded-full bg-zakitos-red/10 border border-zakitos-red/30 flex items-center justify-center flex-shrink-0">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                      <path d="M2 6l3 3 5-5" stroke="#E8170B" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-white/85 text-sm">{text}</span>
                 </div>
               ))}
             </div>
@@ -357,12 +231,35 @@ function BrandStoryTeaser() {
 }
 
 /* ─── Trust Strip ─────────────────────────────────────────────────── */
+const TRUST_ICONS = {
+  shipping: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+    </svg>
+  ),
+  returns: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>
+    </svg>
+  ),
+  clean: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+  ),
+  heat: (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
+    </svg>
+  ),
+};
+
 function TrustStrip() {
   const items = [
-    {icon: '🚚', title: 'Free Shipping', sub: 'On orders over $35'},
-    {icon: '🔄', title: '30-Day Returns', sub: 'No questions asked'},
-    {icon: '🌿', title: 'Clean Ingredients', sub: 'No artificial anything'},
-    {icon: '🔥', title: 'Real Heat', sub: 'Farm-sourced whole chilies'},
+    {icon: TRUST_ICONS.shipping, title: 'Free Shipping', sub: 'On orders over $35'},
+    {icon: TRUST_ICONS.returns,  title: '30-Day Returns', sub: 'No questions asked'},
+    {icon: TRUST_ICONS.clean,    title: 'Clean Ingredients', sub: 'No artificial anything'},
+    {icon: TRUST_ICONS.heat,     title: 'Real Heat', sub: 'Farm-sourced whole chilies'},
   ];
 
   return (
@@ -371,7 +268,7 @@ function TrustStrip() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 md:divide-x md:divide-zakitos-border">
           {items.map(({icon, title, sub}) => (
             <div key={title} className="flex flex-col md:flex-row items-center md:justify-center gap-3 text-center md:text-left md:px-6">
-              <span className="text-3xl">{icon}</span>
+              <div className="text-zakitos-red flex-shrink-0">{icon}</div>
               <div>
                 <p className="font-display text-base text-zakitos-cream tracking-wide">{title}</p>
                 <p className="text-zakitos-muted text-xs mt-0.5">{sub}</p>
@@ -390,7 +287,7 @@ function FlavorQuizCTA() {
     <section
       className="py-24 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #E8170B 0%, #FF5500 50%, #FFB800 100%)',
+        background: 'linear-gradient(135deg, #7A0A05 0%, #B80F08 50%, #E8170B 100%)',
       }}
     >
       {/* Background text */}
@@ -411,7 +308,7 @@ function FlavorQuizCTA() {
         </p>
         <Link
           to="/pages/flavor-quiz"
-          className="inline-flex items-center gap-2 bg-white text-zakitos-black font-display text-xl px-10 py-4 tracking-wide uppercase hover:bg-zakitos-cream transition-colors"
+          className="inline-flex items-center gap-2 bg-white text-zakitos-cream font-display text-xl px-10 py-4 tracking-wide uppercase rounded-xl hover:bg-zakitos-dark transition-colors"
           prefetch="intent"
         >
           Find My Heat Level
@@ -500,18 +397,17 @@ const FEATURED_COLLECTIONS_QUERY = `#graphql
 const MOCK_PRODUCTS = [
   {
     id: 'gid://shopify/Product/1',
-    title: 'Zakitos 1-Pack',
-    handle: '1-pack',
+    title: 'Crunch Chaos',
+    handle: 'zakitos',
     tags: ['snacks', 'bestseller'],
     availableForSale: false,
     priceRange: {
       minVariantPrice: {amount: '9.00', currencyCode: 'USD'},
-      maxVariantPrice: {amount: '9.00', currencyCode: 'USD'},
+      maxVariantPrice: {amount: '155.00', currencyCode: 'USD'},
     },
     images: {
       nodes: [
-        {id: '1', url: '/zakitos-1-pack-package.png', altText: 'Zakitos 1-Pack', width: 800, height: 800},
-        {id: '2', url: '/ecomm-hero-shot-one-package.png', altText: 'Zakitos 1-Pack Lifestyle', width: 800, height: 800},
+        {id: '1', url: '/zakitos-1-pack-package.png', altText: 'Zakitos Crunch Chaos', width: 800, height: 800},
       ],
     },
     variants: {
@@ -523,64 +419,6 @@ const MOCK_PRODUCTS = [
           price: {amount: '9.00', currencyCode: 'USD'},
           compareAtPrice: null,
           selectedOptions: [{name: 'Pack Size', value: '1-Pack'}],
-        },
-      ],
-    },
-  },
-  {
-    id: 'gid://shopify/Product/2',
-    title: 'Zakitos 5-Pack',
-    handle: '5-pack',
-    tags: ['snacks', 'bestseller'],
-    availableForSale: false,
-    priceRange: {
-      minVariantPrice: {amount: '38.00', currencyCode: 'USD'},
-      maxVariantPrice: {amount: '38.00', currencyCode: 'USD'},
-    },
-    images: {
-      nodes: [
-        {id: '3', url: '/zakitos-5-pack-package.png', altText: 'Zakitos 5-Pack', width: 800, height: 800},
-        {id: '4', url: '/ecomm-hero-shot-all packages.png', altText: 'Zakitos 5-Pack Lifestyle', width: 800, height: 800},
-      ],
-    },
-    variants: {
-      nodes: [
-        {
-          id: 'gid://shopify/ProductVariant/2',
-          title: '5-Pack',
-          availableForSale: false,
-          price: {amount: '38.00', currencyCode: 'USD'},
-          compareAtPrice: {amount: '45.00', currencyCode: 'USD'},
-          selectedOptions: [{name: 'Pack Size', value: '5-Pack'}],
-        },
-      ],
-    },
-  },
-  {
-    id: 'gid://shopify/Product/3',
-    title: 'Zakitos 24-Pack',
-    handle: '24-pack',
-    tags: ['snacks', 'bulk'],
-    availableForSale: false,
-    priceRange: {
-      minVariantPrice: {amount: '155.00', currencyCode: 'USD'},
-      maxVariantPrice: {amount: '155.00', currencyCode: 'USD'},
-    },
-    images: {
-      nodes: [
-        {id: '5', url: '/zakitos-24-pack-package.png', altText: 'Zakitos 24-Pack', width: 800, height: 800},
-        {id: '6', url: '/ecomm-hero-shot-all packages.png', altText: 'Zakitos 24-Pack Lifestyle', width: 800, height: 800},
-      ],
-    },
-    variants: {
-      nodes: [
-        {
-          id: 'gid://shopify/ProductVariant/3',
-          title: '24-Pack',
-          availableForSale: false,
-          price: {amount: '155.00', currencyCode: 'USD'},
-          compareAtPrice: {amount: '216.00', currencyCode: 'USD'},
-          selectedOptions: [{name: 'Pack Size', value: '24-Pack'}],
         },
       ],
     },

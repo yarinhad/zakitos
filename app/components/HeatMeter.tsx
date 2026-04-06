@@ -62,9 +62,7 @@ export function HeatMeter({
                 boxShadow: active ? `0 0 8px ${color}60` : 'none',
               }}
             >
-              {active && (
-                <span style={{fontSize: size === 'lg' ? '0.7rem' : '0.55rem'}}>🌶</span>
-              )}
+              {/* pip fill handled by background color */}
             </div>
           );
         })}
@@ -88,17 +86,22 @@ export function HeatBadge({level}: {level: number}) {
 
   return (
     <span
-      className="inline-flex items-center gap-1 font-display text-xs tracking-widest uppercase px-2 py-0.5"
+      className="inline-flex items-center gap-1 font-display text-xs tracking-widest uppercase px-2.5 py-1"
       style={{
         backgroundColor: `${color}22`,
         color,
         border: `1px solid ${color}44`,
+        borderRadius: '999px',
       }}
     >
       {Array.from({length: level}).map((_, i) => (
-        <span key={i} className="text-[10px]">🌶</span>
+        <span
+          key={i}
+          className="inline-block w-1.5 h-1.5 rounded-full"
+          style={{background: color}}
+        />
       ))}
-      <span className="ml-0.5">{tierName}</span>
+      <span className="ml-1">{tierName}</span>
     </span>
   );
 }
