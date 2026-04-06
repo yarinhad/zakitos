@@ -33,7 +33,12 @@ export async function createAppLoadContext(
   executionContext: ExecutionContext,
 ) {
   const waitUntil = executionContext.waitUntil.bind(executionContext);
-  const cache = await caches.open('hydrogen');
+  let cache: Cache | undefined;
+  try {
+    cache = await caches.open('hydrogen');
+  } catch {
+    cache = undefined;
+  }
 
   const {storefront} = createStorefrontClient({
     cache,

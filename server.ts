@@ -25,6 +25,11 @@ export default {
       const response = await handleRequest(request);
 
       if (response.status === 404) {
+        const url = new URL(request.url);
+        // Don't redirect static assets — let them 404 cleanly
+        if (url.pathname.startsWith('/assets/') || url.pathname.match(/\.(js|css|png|jpg|ico|svg|woff2?)$/)) {
+          return response;
+        }
         return storefrontRedirect({
           request,
           response,
