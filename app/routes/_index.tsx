@@ -73,7 +73,7 @@ export default function Homepage() {
           <Suspense fallback={<ProductCardSkeleton />}>
             <Await resolve={featuredProducts}>
               {({products}) => {
-                const product = (products?.nodes ?? MOCK_PRODUCTS)[0];
+                const product = products?.nodes?.[0] ?? MOCK_PRODUCTS[0];
                 return (
                   <div className="max-w-sm mx-auto">
                     <ProductCard product={product} loading="eager" />

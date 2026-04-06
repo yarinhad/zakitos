@@ -33,7 +33,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({product, loading = 'lazy'}: ProductCardProps) {
-  const heatLevel = getHeatLevel(product.tags);
+  const heatLevel = getHeatLevel(product.tags ?? []);
   const firstVariant = product.variants.nodes[0];
   const secondImage = product.images.nodes[1];
   const firstImage = product.images.nodes[0];
