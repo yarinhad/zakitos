@@ -40,7 +40,10 @@ export default {
       return response;
     } catch (error) {
       console.error(error);
-      return new Response('An unexpected error occurred', {status: 500});
+      const message = error instanceof Error
+        ? `${error.message}\n${error.stack ?? ''}`
+        : String(error);
+      return new Response(`500 — ${message}`, {status: 500, headers: {'content-type': 'text/plain'}});
     }
   },
 };
